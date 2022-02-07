@@ -1,0 +1,36 @@
+{{>layout/header}}
+<!-- 목록 출력 영역 -->
+<table class="table table-horizontal table-bordered">
+    <div class="row">
+        <div class="col-md-6" style="padding-right: 10px">
+            <a href="/post/create" role="button" class="btn btn-primary ">등록하기</a><br>
+        </div>    <!-- "col-md-6" : 화면을 컬럼 단위로 나누었을 때, 그 중 6칸 크기의 그리드를 사용하겠다는 뜻 -->
+    </div>
+    <div class="row">
+        <div class="col-md-6" style="align-items: end">
+            <a href="/member/info" role="term">{{login_id}}</a>
+        </div>
+    </div>
+    <thead class="thead-strong">
+    <tr>
+        <th style="width: 10%;align-content: center;">게시글 번호</th>
+        <th style="width: 50%;align-content: center;">제목</th>
+        <th style="width: 20%;align-content: center;">작성자</th>
+        <th style="width: 20%;align-content: center;">작성 날짜</th>
+    </tr>
+    </thead>
+    <tbody id="tbody">
+    {{#post}}  <!-- post 라는 list 를 순회(반복문)한다. -->
+    <tr>
+        <td>{{post_id}}</td>
+        <td><a href="/post/read/{{seq_id}}">{{title}}</a></td>
+        <td>{{login_id}}</td>
+        <!-- 수정 날짜 -->
+    </tr>
+    {{/post}}
+    </tbody>
+
+</table>
+
+
+{{>layout/footer}}
