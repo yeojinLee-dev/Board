@@ -9,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
@@ -29,13 +32,26 @@ public class IndexController {
     }
 
     @GetMapping("/post/list")
-    public String postList(Model LoginId, Model PostList) {
-        LoginId.addAttribute("member", login_id);
+    public String postList(Model PostList, Model Login_Id, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String login_id = (String) session.getAttribute("login_id");
+        Login_Id.addAttribute("login_id", login_id);
+
         return "post-list";
     }
 
     @GetMapping("/post/create")
-    public String postCreate() {
+    public String postCreate(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+
+        String login_id = (String) session.getAttribute("login_id");
+        model.addAttribute("login_id", login_id);
         return "post-create";
     }
+
+    @GetMapping("/member/info")
+    public String memberInfo() {
+        return "member-info";
+    }
+
 }

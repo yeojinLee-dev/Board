@@ -13,7 +13,7 @@ public class MemberService {
 
     public int joinMember(Member member) {
 
-        return memberRepository.save(member);
+        return memberRepository.saveMember(member);
     }
 
     public int isDuplicateLoginId(String login_id) {

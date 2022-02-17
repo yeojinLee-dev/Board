@@ -12,7 +12,10 @@ var main = {
         });
         $('#btn-login').on('click', function () {
             _this.login();
-        })
+        });
+        $('#btn-save').on('click', function () {
+            _this.savePost();
+        });
     },
     join : function () {
         var data = {
@@ -99,7 +102,7 @@ var main = {
             success: function (successLogin) {
                 if (successLogin == 1) {
                     console.log("로그인 성공");
-                    window.location.href = '/post/list/'+login_id;
+                    window.location.href = '/post/list';
                 } else if (successLogin == 0) {
                     $('.error_message_login').css("display", "inline-block");
                     console.log("로그인 실패");
@@ -110,8 +113,31 @@ var main = {
             }
 
         });
-    }
+    },
+    savePost : function () {
 
+        var data = {
+            title: $('#title').val(),
+            login_id: $('#login_id').val(),
+            content: $('#content').val(),
+            category : $("select[name=category] > option:selected").val()
+        };
+
+        console.log("게시물 : ", data);
+
+        $.ajax({
+            type : 'POST',
+            url : '/api/post/create',
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            data : JSON.stringify(data)
+        }).done(function () {
+            alert('게시글을 등록하였습니다.');
+            window.location.href = '/';
+        }).fail(function (error){
+            alert(JSON.stringify(error));
+        })
+    }
 };
 
 main.init();

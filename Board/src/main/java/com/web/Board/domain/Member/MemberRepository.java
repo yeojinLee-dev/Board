@@ -21,7 +21,7 @@ public class MemberRepository {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public int save(Member member) {
+    public int saveMember(Member member) {
 
         sql = "insert into board.MEMBER (NAME, LOGIN_ID, PASSWORD, EMAIL, PHONE) " +
                 "values (?, ?, ?, ?, ?)";

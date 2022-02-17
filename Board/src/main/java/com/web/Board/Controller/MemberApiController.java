@@ -53,7 +53,7 @@ public class MemberApiController {
     public int login(@RequestParam String login_id, @RequestParam String password, HttpServletRequest request) {
         //System.out.println("아이디 => " + login_id);
         HttpSession session = request.getSession();
-
+        session.setAttribute("login_id", login_id);
 
         return memberService.login(login_id, password);
     }

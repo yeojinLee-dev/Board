@@ -6,12 +6,23 @@
     <div class="col-md-6">
         <form>
             <div class="form-group">
+                <label for="category">
+                    <select name="category" id="category">
+                        <option value="none">-- 게시판 선택 --</option>
+                        <option value="free">자유 게시판</option>
+                        <option value="ask">질문 게시판</option>
+                        <option value="notice">공지 게시판</option>
+                        <option value="attend">출석 체크</option>
+                    </select>
+                </label>
+            </div>
+            <div class="form-group">
                 <label for="title">제목</label>
                 <input type="text" class="form-control" id="title" placeholder="제목 입력"><br><br>
             </div>
             <div class="form-group">
-                <label for="author">작성자</label>
-                <input type="text" class="form-control" id="author" placeholder="작성자"><br><br>
+                <label for="login_id">작성자</label>
+                <input type="text" class="form-control" id="login_id" value={{login_id}} readonly><br><br>
             </div>
             <div class="form-group">
                 <label for="content">게시글</label>

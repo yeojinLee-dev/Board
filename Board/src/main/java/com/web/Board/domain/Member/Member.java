@@ -24,13 +24,16 @@ public class Member {
 
     private String phone;
 
-    public Member(int member_id, String name, String login_id, String password, String email, String phone) {
+    private int post_id;
+
+    public Member(int member_id, String name, String login_id, String password, String email, String phone, int post_id) {
         this.member_id = member_id;
         this.name = name;
         this.login_id = login_id;
         this.password = password;
         this.email = email;
         this.phone = phone;
+        this.post_id = post_id;
     }
 
 }

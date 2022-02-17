@@ -25,15 +25,17 @@ public class Post {
 
     private Member member;
 
-    private Category category;
+    private int category_id;
 
-    public Post(String title, String content, LocalDateTime created_date, Member member, Category category) {
+    private int member_id;
+
+    public Post(String title, String content, LocalDateTime created_date, int category_id, int member_id) {
 
         this.title = title;
         this.content = content;
         this.created_date = created_date;
-        this.member = member;
-        this.category = category;
+        this.member_id = member_id;
+        this.category_id = category_id;
     }
 
 }
