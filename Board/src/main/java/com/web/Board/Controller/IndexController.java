@@ -32,11 +32,11 @@ public class IndexController {
     }
 
     @GetMapping("/post/list")
-    public String postList(Model PostList, Model Login_Id, HttpServletRequest request) {
+    public String postList(Model Post, Model Login_Id, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login_id = (String) session.getAttribute("login_id");
         Login_Id.addAttribute("login_id", login_id);
-        PostList.addAttribute("postList", postService.findAllPostList());
+        Post.addAttribute("post", postService.findAllPostList());
 
         return "post-list";
     }

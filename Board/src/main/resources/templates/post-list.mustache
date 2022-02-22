@@ -23,8 +23,10 @@
     {{#post}}  <!-- post 라는 list 를 순회(반복문)한다. -->
     <tr>
         <td>{{post_id}}</td>
-        <td><a href="/post/read/{{seq_id}}">{{title}}</a></td>
-        <td>{{login_id}}</td>
+        <td>{{category.name}}</td>
+        <td><a href="/post/read/{{post_id}}">{{title}}</a></td>
+        <td>{{member.login_id}}</td>
+        <!-- <td>{created_date}}</td> -->
         <!-- 수정 날짜 -->
     </tr>
     {{/post}}

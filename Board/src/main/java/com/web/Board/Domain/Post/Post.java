@@ -1,9 +1,9 @@
 /* https://jhkang-tech.tistory.com/64 참고 */
 
-package com.web.Board.domain.Post;
+package com.web.Board.Domain.Post;
 
-import com.web.Board.domain.Category.Category;
-import com.web.Board.domain.Member.Member;
+import com.web.Board.Domain.Category.Category;
+import com.web.Board.Domain.Member.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +24,8 @@ public class Post {
     private LocalDateTime created_date;
 
     private Member member;
+
+    private Category category;
 
     private int category_id;
 

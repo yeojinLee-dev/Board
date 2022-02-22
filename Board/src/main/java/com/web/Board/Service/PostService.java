@@ -1,13 +1,11 @@
 package com.web.Board.Service;
 
-import com.web.Board.domain.Category.Category;
-import com.web.Board.domain.Category.CategoryRepository;
-import com.web.Board.domain.Member.Member;
-import com.web.Board.domain.Member.MemberRepository;
-import com.web.Board.domain.Post.Post;
-import com.web.Board.domain.Post.PostRepository;
+import com.web.Board.Domain.Category.Category;
+import com.web.Board.Domain.Category.CategoryRepository;
+import com.web.Board.Domain.Member.MemberRepository;
+import com.web.Board.Domain.Post.Post;
+import com.web.Board.Domain.Post.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +22,6 @@ public class PostService {
     public int createPost(Post post, String login_id) {
         post.setMember(memberRepository.findByLogin_Id(login_id).get(0));
 
-
         return postRepository.savePost(post);
     }
 
@@ -34,6 +31,6 @@ public class PostService {
 
     public List<Post> findAllPostList() {
         return postRepository.findAllPost();
-        }
     }
+
 }

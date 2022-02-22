@@ -1,4 +1,4 @@
-package com.web.Board.domain.Member;
+package com.web.Board.Domain.Member;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

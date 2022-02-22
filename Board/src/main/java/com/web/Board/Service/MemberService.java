@@ -1,7 +1,7 @@
 package com.web.Board.Service;
 
-import com.web.Board.domain.Member.Member;
-import com.web.Board.domain.Member.MemberRepository;
+import com.web.Board.Domain.Member.Member;
+import com.web.Board.Domain.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

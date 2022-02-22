@@ -1,7 +1,7 @@
 package com.web.Board.Controller;
 
 import com.web.Board.Service.MemberService;
-import com.web.Board.domain.Member.Member;
+import com.web.Board.Domain.Member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

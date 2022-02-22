@@ -1,11 +1,8 @@
-package com.web.Board.domain.Member;
+package com.web.Board.Domain.Member;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Email;
 
 @NoArgsConstructor
 @Getter

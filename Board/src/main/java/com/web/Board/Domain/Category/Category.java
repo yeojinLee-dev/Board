@@ -1,4 +1,4 @@
-package com.web.Board.domain.Category;
+package com.web.Board.Domain.Category;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,10 +1,8 @@
-package com.web.Board.domain.Category;
+package com.web.Board.Domain.Category;
 
-import com.web.Board.domain.Member.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.datasource.lookup.DataSourceLookupFailureException;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;

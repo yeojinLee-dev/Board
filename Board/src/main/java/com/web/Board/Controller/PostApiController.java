@@ -1,8 +1,7 @@
 package com.web.Board.Controller;
 
 import com.web.Board.Service.PostService;
-import com.web.Board.domain.Category.Category;
-import com.web.Board.domain.Post.Post;
+import com.web.Board.Domain.Post.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
