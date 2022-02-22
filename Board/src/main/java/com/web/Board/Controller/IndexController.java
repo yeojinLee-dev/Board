@@ -36,16 +36,19 @@ public class IndexController {
         HttpSession session = request.getSession();
         String login_id = (String) session.getAttribute("login_id");
         Login_Id.addAttribute("login_id", login_id);
+        PostList.addAttribute("postList", postService.findAllPostList());
 
         return "post-list";
     }
 
     @GetMapping("/post/create")
-    public String postCreate(Model model, HttpServletRequest request) {
+    public String postCreate(Model member, Model category, HttpServletRequest request) {
         HttpSession session = request.getSession();
 
         String login_id = (String) session.getAttribute("login_id");
-        model.addAttribute("login_id", login_id);
+        member.addAttribute("login_id", login_id);
+        category.addAttribute("category", postService.findAllCategory());
+
         return "post-create";
     }
 

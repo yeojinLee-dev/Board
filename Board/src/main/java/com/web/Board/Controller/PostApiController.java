@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 public class PostApiController {
     private final PostService postService;
 
+    @ResponseBody
     @PostMapping("/api/post/create")
     public int createPost(@RequestBody Post post, HttpServletRequest request) {
         System.out.println("글 등록");
@@ -25,12 +26,4 @@ public class PostApiController {
 
         return postService.createPost(post, login_id);
     }
-
-    @PostMapping("/api/category/save")
-    public int saveCategory(@RequestBody Category category) {
-        return postService.saveCategory(category);
-    }
-
-
-
 }

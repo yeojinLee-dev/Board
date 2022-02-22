@@ -116,11 +116,13 @@ var main = {
     },
     savePost : function () {
 
+        var sCategory = $("select[name=category] > option:selected").val();
+
         var data = {
             title: $('#title').val(),
             login_id: $('#login_id').val(),
             content: $('#content').val(),
-            category : $("select[name=category] > option:selected").val()
+            category_id : parseInt(sCategory)
         };
 
         console.log("게시물 : ", data);
@@ -133,7 +135,7 @@ var main = {
             data : JSON.stringify(data)
         }).done(function () {
             alert('게시글을 등록하였습니다.');
-            window.location.href = '/';
+            window.location.href = '/post/list';
         }).fail(function (error){
             alert(JSON.stringify(error));
         })

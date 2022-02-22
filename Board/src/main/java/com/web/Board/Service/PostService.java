@@ -10,9 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
+
 
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
@@ -25,7 +28,12 @@ public class PostService {
         return postRepository.savePost(post);
     }
 
-    public int saveCategory(Category category) {
-        return categoryRepository.saveCategory(category);
+    public List<Category> findAllCategory() {
+        return categoryRepository.findAllCategory();
+    }
+
+    public List<Post> findAllPostList() {
+        return postRepository.findAllPost();
+        }
     }
 }
