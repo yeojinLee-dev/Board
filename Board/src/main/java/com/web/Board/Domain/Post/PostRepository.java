@@ -26,18 +26,32 @@ public class PostRepository {
         List<Member> member = jdbcTemplate.query( "select * from board.MEMBER where LOGIN_ID = ? ", MemberRowMapper(), post.getMember().getLogin_id());
 
 
-        String sql = "insert into board.POST (TITLE, MEMBER_ID, CONTENT, CATEGORY_ID) " +
-                "values (?, (select MEMBER_ID from board.MEMBER where LOGIN_ID = ? limit 1), ?, ?)";
+        String sql = "insert into board.POST (TITL vE, MEMBER_ID, CONTENT, CATEGORY_ID, CREATED_DATE) " +
+                "values (?, (select MEMBER_ID from board.MEMBER where LOGIN_ID = ? limit 1), ?, ?, ?)";
 
-        System.out.println("savePost() : " + String.format("%s\n%s\n%s\n%d", post.getTitle(),
-                post.getMember().getLogin_id(), post.getContent(), post.getCategory_id()));
-
-        jdbcTemplate.update(sql, post.getTitle(), post.getMember().getLogin_id(), post.getContent(), post.getCategory_id());
+        //System.out.println("savePost() : " + String.format("%s\n%s\n%s\n%d", post.getTitle(),
+                //post.getMember().getLogin_id(), post.getContent(), post.getCategory_id()));
+        LocalDateTime postSaveTime = LocalDateTime.now();
+        jdbcTemplate.update(sql, post.getTitle(), post.getMember().getLogin_id(), post.getContent(), post.getCategory_id(), postSaveTime);
         return 1;
     }
 
     public List<Post> findAllPost() {
         List<Post> posts = jdbcTemplate.query("select * from board.POST", PostRowMapper());
+        posts = getMembernCategory(posts);
+
+        return posts;
+    }
+
+    public Post findByPost_Id(int post_id) {
+        List<Post> post = jdbcTemplate.query("select * from board.POST where POST_ID = ? limit 1", PostRowMapper(), post_id);
+        post = getMembernCategory(post);
+
+        System.out.printf("postRepository -> findByPost_Id()\n created_date : %s\n", post.get(0).getCreated_date().toString());
+        return post.get(0);
+    }
+
+    private List<Post> getMembernCategory(List<Post> posts) {
         List<Member> member;
         List<Category> category;
 
@@ -61,7 +75,8 @@ public class PostRepository {
             post.setContent(rs.getString("CONTENT"));
             post.setMember_id(rs.getInt("MEMBER_ID"));
             post.setCategory_id(rs.getInt("CATEGORY_ID"));
-            //post.setCreated_date((LocalDateTime) rs.getObject("CREATED_DATE"));
+            post.setCreated_date(rs.getTimestamp("CREATED_DATE").toLocalDateTime());
+
             return post;
         };
     }

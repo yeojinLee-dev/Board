@@ -8,6 +8,9 @@ import com.web.Board.Domain.Post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -30,7 +33,13 @@ public class PostService {
     }
 
     public List<Post> findAllPostList() {
-        return postRepository.findAllPost();
+        List<Post> post = postRepository.findAllPost();
+        LocalDateTime now = LocalDateTime.now();
+
+        return post;
     }
 
+    public Post findByPost_Id(int post_id) {
+        return postRepository.findByPost_Id(post_id);
+    }
 }

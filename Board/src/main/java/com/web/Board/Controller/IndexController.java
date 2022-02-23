@@ -35,6 +35,7 @@ public class IndexController {
     public String postList(Model Post, Model Login_Id, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login_id = (String) session.getAttribute("login_id");
+
         Login_Id.addAttribute("login_id", login_id);
         Post.addAttribute("post", postService.findAllPostList());
 
@@ -57,4 +58,11 @@ public class IndexController {
         return "member-info";
     }
 
+    @GetMapping("/post/read/{post_id}")
+    public String postRead(@PathVariable int post_id, Model Post) {
+        Post.addAttribute("post", postService.findByPost_Id(post_id));
+
+        //System.out.printf("controller -> postRead() : %s\n%s", postService.findByPost_Id(post_id).getTitle(), postService.findByPost_Id(post_id).getCategory().getName());
+        return "post-read";
+    }
 }

@@ -1,0 +1,29 @@
+{{>layout/header}}
+
+
+<div class="col-md-12">
+    <h2>게시글 조회</h2><br>
+    <div class="col-md-6">
+        <h5 id="category" style="color: #6A82FB;font-size: small">{{post.category.name}} ></h5>
+        <form>
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" class="form-control" id="title" value="{{post.title}}" readonly>
+            </div>
+            <h6 id="category" style="color: darkgray;">{{post.created_date}}</h6><br><br>
+            <div class="form-group">
+                <label for="author">작성자</label>
+                <input type="text" class="form-control" id="login_id" value="{{post.member.login_id}}" readonly> <br><br>
+            </div>
+            <div class="form-group">
+                <label for="content">내용</label>
+                <textarea class="form-control" id="content" readonly>{{post.content}}</textarea><br><br>
+            </div>
+        </form>
+        <a href="/post/list" role="button" class="btn btn-secondary">목록</a>
+        <a href="/post/modify/{{post_id}}" role="button" class="btn btn-primary">수정</a>
+        <button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
+    </div>
+</div>
+
+{{>layout/footer}}
