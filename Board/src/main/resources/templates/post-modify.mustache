@@ -1,27 +1,35 @@
 {{>layout/header}}
 
 <div class="col-md-12">
-    <h2>게시글 수정</h2><br><br>
+    <h2>게시글 수정</h2><br>
     <div class="col-md-6">
         <form>
             <div class="form-group">
-                <label for="seq_id">번호</label>
-                <input type="text" class="form-control" id="seq_id" value="{{post_id}}" readonly><br><br>
+                <h5 id="category" style="color: #6A82FB;font-size: small">{{post.category.name}} ></h5>
+                <label for="category">
+                    <select name="category" id="category">
+                        <option value="none">-- 게시판 선택 --</option>
+                        {{#category}}
+                            <option value={{category_id}}>{{name}}</option>
+                        {{/category}}
+                    </select>
+                </label>
             </div>
+            <input type="text" id="post_id" value="{{post.post_id}}" style="display: none">
             <div class="form-group">
                 <label for="title">제목</label>
-                <input type="text" class="form-control" id="title" value="{{post.title}}"><br><br>
+                <input type="text" class="form-control" id="title" placeholder="제목 입력" value={{post.title}}><br><br>
             </div>
             <div class="form-group">
-                <label for="author">작성자</label>
-                <input type="text" class="form-control" id="author" value="{{login_id}}" readonly> <br><br>
+                <label for="login_id">작성자</label>
+                <input type="text" class="form-control" id="login_id" value={{post.member.login_id}} readonly><br><br>
             </div>
             <div class="form-group">
-                <label for="content">내용</label>
-                <textarea class="form-control" id="content">{{post.content}}</textarea><br><br>
+                <label for="content">게시글</label>
+                <textarea class="form-control" id="content" placeholder="내용을 입력하세요" >{{post.content}}</textarea><br><br>
             </div>
         </form>
-        <a href="/" role="button" class="btn btn-secondary">목록</a>
+        <a href="/post/read/{{post.post_id}}" role="button" class="btn btn-secondary">취소</a>
         <button type="button" class="btn btn-primary" id="btn-update">완료</button>
     </div>
 </div>

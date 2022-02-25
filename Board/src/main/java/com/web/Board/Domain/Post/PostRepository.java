@@ -26,7 +26,7 @@ public class PostRepository {
         List<Member> member = jdbcTemplate.query( "select * from board.MEMBER where LOGIN_ID = ? ", MemberRowMapper(), post.getMember().getLogin_id());
 
 
-        String sql = "insert into board.POST (TITL vE, MEMBER_ID, CONTENT, CATEGORY_ID, CREATED_DATE) " +
+        String sql = "insert into board.POST (TITLE, MEMBER_ID, CONTENT, CATEGORY_ID, CREATED_DATE) " +
                 "values (?, (select MEMBER_ID from board.MEMBER where LOGIN_ID = ? limit 1), ?, ?, ?)";
 
         //System.out.println("savePost() : " + String.format("%s\n%s\n%s\n%d", post.getTitle(),
@@ -47,8 +47,19 @@ public class PostRepository {
         List<Post> post = jdbcTemplate.query("select * from board.POST where POST_ID = ? limit 1", PostRowMapper(), post_id);
         post = getMembernCategory(post);
 
-        System.out.printf("postRepository -> findByPost_Id()\n created_date : %s\n", post.get(0).getCreated_date().toString());
+        System.out.printf("postRepository -> findByPost_Id()\n post_id : %d\n", post.get(0).getPost_id());
         return post.get(0);
+    }
+
+    public int updatePost(Post post) {
+        System.out.printf("postRepository -> updatePost()\n 수정된 게시물 번호 : %d\n", post.getPost_id());
+
+        return jdbcTemplate.update("update board.Post set CATEGORY_ID = ?, TITLE = ?, CONTENT = ? where POST_ID = ?", post.getCategory_id(),
+                post.getTitle(), post.getContent(), post.getPost_id());
+    }
+
+    public int deletePost(int post_id) {
+        return jdbcTemplate.update("delete from board.POST where POST_ID = ?", post_id);
     }
 
     private List<Post> getMembernCategory(List<Post> posts) {

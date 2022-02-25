@@ -28,10 +28,6 @@ public class PostService {
         return postRepository.savePost(post);
     }
 
-    public List<Category> findAllCategory() {
-        return categoryRepository.findAllCategory();
-    }
-
     public List<Post> findAllPostList() {
         List<Post> post = postRepository.findAllPost();
         LocalDateTime now = LocalDateTime.now();
@@ -41,5 +37,15 @@ public class PostService {
 
     public Post findByPost_Id(int post_id) {
         return postRepository.findByPost_Id(post_id);
+    }
+
+    public int updatePost(Post post, String login_id) {
+        post.setMember(memberRepository.findByLogin_Id(login_id).get(0));
+
+        return postRepository.updatePost(post);
+    }
+
+    public int deletePost(int post_id) {
+        return postRepository.deletePost(post_id);
     }
 }

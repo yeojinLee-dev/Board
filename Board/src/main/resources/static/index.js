@@ -16,6 +16,12 @@ var main = {
         $('#btn-save').on('click', function () {
             _this.savePost();
         });
+        $('#btn-update').on('click', function () {
+            _this.updatePost();
+        });
+        $('#btn-delete').on('click', function () {
+            _this.deletePost();
+        })
     },
     join : function () {
         var data = {
@@ -138,6 +144,48 @@ var main = {
             window.location.href = '/post/list';
         }).fail(function (error){
             alert(JSON.stringify(error));
+        })
+    },
+    updatePost : function () {
+        var sCategory = $("select[name=category] > option:selected").val();
+
+        var data = {
+            post_id : parseInt($('#post_id').val()),
+            title: $('#title').val(),
+            content: $('#content').val(),
+            category_id : parseInt(sCategory),
+        };
+
+        console.log("게시물 : ", data);
+
+        $.ajax({
+            type : 'PUT',
+            url : '/api/post/update/' + data.post_id,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            data : JSON.stringify(data)
+        }).done(function () {
+            alert('수정이 완료되었습니다.');
+            window.location.href = '/post/read/' + data.post_id;
+        }).fail(function (error){
+            alert(JSON.stringify(error));
+        })
+    },
+    deletePost : function () {
+        var post_id = $('#post_id').val();
+
+        console.log(post_id);
+
+        $.ajax({
+            type : 'DELETE',
+            url : '/api/post/delete/' + post_id,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+        }).done(function () {
+            alert('삭제되었습니다.');
+            window.location.href = '/post/list';
+        }).fail(function (error) {
+            alert('삭제 중 오류가 발생하였습니다.');
         })
     }
 };

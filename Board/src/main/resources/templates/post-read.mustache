@@ -6,6 +6,7 @@
     <div class="col-md-6">
         <h5 id="category" style="color: #6A82FB;font-size: small">{{post.category.name}} ></h5>
         <form>
+            <input type="text" id="post_id", value={{post.post_id}} style="display: none">
             <div class="form-group">
                 <label for="title">제목</label>
                 <input type="text" class="form-control" id="title" value="{{post.title}}" readonly>
@@ -21,7 +22,7 @@
             </div>
         </form>
         <a href="/post/list" role="button" class="btn btn-secondary">목록</a>
-        <a href="/post/modify/{{post_id}}" role="button" class="btn btn-primary">수정</a>
+        <a href="/post/update/{{post_id}}" role="button" class="btn btn-primary">수정</a>
         <button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
     </div>
 </div>

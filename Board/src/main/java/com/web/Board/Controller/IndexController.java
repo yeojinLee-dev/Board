@@ -1,5 +1,6 @@
 package com.web.Board.Controller;
 
+import com.web.Board.Service.CategoryService;
 import com.web.Board.Service.MemberService;
 import com.web.Board.Service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class IndexController {
 
     private final PostService postService;
     private final MemberService memberService;
+    private final CategoryService categoryService;
 
     @GetMapping("/")
     public String login() {
@@ -43,12 +45,12 @@ public class IndexController {
     }
 
     @GetMapping("/post/create")
-    public String postCreate(Model member, Model category, HttpServletRequest request) {
+    public String createPost(Model member, Model category, HttpServletRequest request) {
         HttpSession session = request.getSession();
 
         String login_id = (String) session.getAttribute("login_id");
         member.addAttribute("login_id", login_id);
-        category.addAttribute("category", postService.findAllCategory());
+        category.addAttribute("category", categoryService.findAllCategory());
 
         return "post-create";
     }
@@ -59,10 +61,19 @@ public class IndexController {
     }
 
     @GetMapping("/post/read/{post_id}")
-    public String postRead(@PathVariable int post_id, Model Post) {
+    public String readPost(@PathVariable int post_id, Model Post) {
         Post.addAttribute("post", postService.findByPost_Id(post_id));
 
         //System.out.printf("controller -> postRead() : %s\n%s", postService.findByPost_Id(post_id).getTitle(), postService.findByPost_Id(post_id).getCategory().getName());
         return "post-read";
+    }
+
+    @GetMapping("/post/update/{post_id}")
+    public String readPostToUpdate(@PathVariable int post_id, Model Post, Model Category) {
+        Post.addAttribute("post", postService.findByPost_Id(post_id));
+        Category.addAttribute("category", categoryService.findAllCategory());
+
+        return "post-modify";
+
     }
 }
