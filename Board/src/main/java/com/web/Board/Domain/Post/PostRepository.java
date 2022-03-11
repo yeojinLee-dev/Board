@@ -43,6 +43,13 @@ public class PostRepository {
         return posts;
     }
 
+    public List<Post> findPostLimited(int limit_start, int pagePostCnt) {
+        List<Post> posts = jdbcTemplate.query("select * from board.POST order by post_id asc limit ?, ?", PostRowMapper(), limit_start, pagePostCnt);
+        posts = getMembernCategory(posts);
+
+        return posts;
+    }
+
     public Post findByPost_Id(int post_id) {
         List<Post> post = jdbcTemplate.query("select * from board.POST where POST_ID = ? limit 1", PostRowMapper(), post_id);
         post = getMembernCategory(post);
@@ -75,6 +82,10 @@ public class PostRepository {
 
         }
         return posts;
+    }
+
+    public int countPost() {
+        return jdbcTemplate.queryForObject("select count(*) from board.POST", Integer.class);
     }
 
     private RowMapper<Post> PostRowMapper() {

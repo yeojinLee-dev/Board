@@ -19,9 +19,16 @@ var main = {
         $('#btn-update').on('click', function () {
             _this.updatePost();
         });
-        $('#btn-delete').on('click', function () {
+        $('#btn-delete').on('click',function () {
             _this.deletePost();
-        })
+        });
+/*
+        $('#btn-title').on('click', function () {
+            console.log('init() #btn-title.on(click) => ok');
+            _this.checkAuthor();
+        });
+*/
+        console.log('init()');
     },
     join : function () {
         var data = {
@@ -100,7 +107,8 @@ var main = {
             login_id: $('#login_id').val(),
             password: $('#password').val()
         };
-        console.log("아이디 : ", data.login_id, "비밀번호 : ", data.password);
+
+        //console.log("아이디 : ", data.login_id, "비밀번호 : ", data.password);
         $.ajax({
             url: '/api/member/login',
             type : 'POST',
@@ -108,7 +116,7 @@ var main = {
             success: function (successLogin) {
                 if (successLogin == 1) {
                     console.log("로그인 성공");
-                    window.location.href = '/post/list';
+                    window.location.href = '/post/list/'+ 1;
                 } else if (successLogin == 0) {
                     $('.error_message_login').css("display", "inline-block");
                     console.log("로그인 실패");
@@ -163,7 +171,7 @@ var main = {
             url : '/api/post/update/' + data.post_id,
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
-            data : JSON.stringify(data)
+            data : JSON.stringify(data),
         }).done(function () {
             alert('수정이 완료되었습니다.');
             window.location.href = '/post/read/' + data.post_id;
@@ -186,6 +194,32 @@ var main = {
             window.location.href = '/post/list';
         }).fail(function (error) {
             alert('삭제 중 오류가 발생하였습니다.');
+        })
+    },
+    checkAuthor : function () {
+        var post_id = $('#post_id').val();
+
+        console.log('checkAuthor(): post_id=>', post_id);
+
+        $.ajax({
+            type : 'POST',
+            url : '/api/post/read/' + post_id,
+            success : function (isSameAuthor) {
+                console.log(isSameAuthor);
+
+                if (isSameAuthor == 1) {
+                    $('#btn-update-read').css('display', 'inline')
+                    $('#btn-delete').css('display', 'inline')
+                }
+
+                else if (isSameAuthor == 0) {
+                    $('.button_only_author').css('display', 'none')
+                    $('#btn-delete').css('display', 'none')
+                }
+            },
+            error: function () {
+                alert("작성자 확인 중 오류 발생");
+            }
         })
     }
 };

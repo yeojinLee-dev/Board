@@ -24,7 +24,7 @@ public class CategoryRepository {
     }
 
     public List<Category> findAllCategory() {
-        return jdbcTemplate.query("select * from board.CATEGORY", CategoryRowMapper());
+        return jdbcTemplate.query("select * from board.CATEGORY where IS_DELETED = 0", CategoryRowMapper());
     }
 
     private RowMapper<Category> CategoryRowMapper() {

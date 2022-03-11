@@ -41,4 +41,28 @@ public class PostApiController {
     public int deletePost(@PathVariable int post_id) {
         return postService.deletePost(post_id);
     }
+
+    @ResponseBody
+    @PostMapping("/api/post/read/{post_id}")
+    public int checkAuthor(@PathVariable int post_id, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String login_id = (String)session.getAttribute("login_id");
+        System.out.printf("controller -> checkAuthor() : login_id=%s\n", login_id);
+
+        String author = postService.findByPost_Id(post_id).getMember().getLogin_id();
+        System.out.printf("controller -> checkAuthor() : author=%s\n", author);
+
+
+        int isSameAuthor;
+
+        if (login_id.equals(author))
+            isSameAuthor = 1;
+        else
+            isSameAuthor = 0;
+
+        return isSameAuthor;
+    }
+
+
+
 }
