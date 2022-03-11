@@ -1,6 +1,6 @@
 package com.web.Board.Service;
 
-import com.web.Board.Domain.PageBtn;
+import com.web.Board.Domain.Post.PageBtn;
 import com.web.Board.Domain.Post.Post;
 import com.web.Board.Domain.Post.PostRepository;
 import lombok.RequiredArgsConstructor;

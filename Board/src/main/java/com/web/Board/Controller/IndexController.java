@@ -1,6 +1,6 @@
 package com.web.Board.Controller;
 
-import com.web.Board.Domain.PageBtn;
+import com.web.Board.Domain.Post.PageBtn;
 import com.web.Board.Service.PageService;
 import com.web.Board.Service.CategoryService;
 import com.web.Board.Service.MemberService;

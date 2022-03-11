@@ -1,4 +1,4 @@
-package com.web.Board.Domain;
+package com.web.Board.Domain.Post;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
