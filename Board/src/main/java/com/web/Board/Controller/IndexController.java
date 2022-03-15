@@ -35,20 +35,21 @@ public class IndexController {
         return "join";
     }
 
-    @GetMapping("/post/list/{pageNum}")
-    public String postList(Model postList, Model Login_Id, Model pageBtn, HttpServletRequest request, @PathVariable int pageNum) {
+    @GetMapping("/post/list/{pageNumParam}")
+    public String postList(Model postList, Model Login_Id, Model pageBtn, HttpServletRequest request, @PathVariable int pageNumParam) {
         HttpSession session = request.getSession();
         String login_id = (String) session.getAttribute("login_id");
 
         Login_Id.addAttribute("login_id", login_id);
-        postList.addAttribute("postList", pageService.setPageList(pageNum));
-        System.out.printf("IndexController.postList() : postList");
+        postList.addAttribute("postList", pageService.setPageList(pageNumParam));
+        //System.out.printf("IndexController.postList() : postList");
 
-        pageBtn.addAttribute("pageBtn", pageService.setPageBtn());
-        System.out.printf("IndexController.postList() : pageBtn");
+        pageBtn.addAttribute("pageBtn", pageService.setPageBtn(pageNumParam));
+        //System.out.printf("IndexController.postList() : pageBtn");
 
-        List<PageBtn> btns = pageService.setPageBtn();
         /*
+        List<PageBtn> btns = pageService.setPageBtn(currentPageNum);
+
         for (int i = 0; i < btns.size(); i++)
             System.out.printf("IndexController : pageBtn Model\n-> %d", btns.get(i).getPageNum());
         */
@@ -56,12 +57,14 @@ public class IndexController {
     }
 
     @GetMapping("/post/create")
-    public String createPost(Model member, Model category, HttpServletRequest request) {
+    public String createPost(Model member, Model category, Model lastPage, HttpServletRequest request) {
         HttpSession session = request.getSession();
 
         String login_id = (String) session.getAttribute("login_id");
+
         member.addAttribute("login_id", login_id);
         category.addAttribute("category", categoryService.findAllCategory());
+        lastPage.addAttribute("lastPage", pageService.getCurrentPage(postService.getLastPost_Id()));
 
         return "post-create";
     }
@@ -72,12 +75,13 @@ public class IndexController {
     }
 
     @GetMapping("/post/read/{post_id}")
-    public String readPost(@PathVariable int post_id, Model Post, Model Login_id, HttpServletRequest request) {
+    public String readPost(@PathVariable int post_id, Model Post, Model Login_id, Model CurrentPage, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login_id = (String) session.getAttribute("login_id");
 
         Login_id.addAttribute("login_id", login_id);
         Post.addAttribute("post", postService.findByPost_Id(post_id));
+        CurrentPage.addAttribute("currentPage", pageService.getCurrentPage(post_id));
 
         // System.out.printf("controller -> postRead() : %s\n%s", postService.findByPost_Id(post_id).getTitle(), postService.findByPost_Id(post_id).getCategory().getName());
         return "post-read";

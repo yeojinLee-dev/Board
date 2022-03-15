@@ -17,42 +17,91 @@ public class PageService {
 
     final int postCntPerPage = 10;
     int pageBtnCnt;
+    final int pageBtnPerPage = 5;
 
     public void setPageConfig() {
-        int postCnt = postRepository.countPost();
+        int postTotalCnt = postRepository.countTotalPost();
 
-        if (postCnt%postCntPerPage > 0)
-            this.pageBtnCnt = postCnt/postCntPerPage + 1;
+        if (postTotalCnt%postCntPerPage > 0)
+            this.pageBtnCnt = postTotalCnt/postCntPerPage + 1;
         else
-            this.pageBtnCnt = postCnt/postCntPerPage;
+            this.pageBtnCnt = postTotalCnt/postCntPerPage;
     }
 
-    public List<PageBtn> setPageBtn() {
+    public List<PageBtn> setPageBtn(int currentPageNum) {
         List<PageBtn> pageBtns = new ArrayList<PageBtn>();
+        int btnStart = 1, btnEnd;
 
         setPageConfig();
-        for (int i = 0; i < this.pageBtnCnt; i++) {
-            PageBtn pageBtn = new PageBtn(i+1);
-            pageBtns.add(pageBtn);
+
+        if (currentPageNum%pageBtnPerPage == 0)
+            btnStart = 1 + (currentPageNum/pageBtnPerPage-1)*pageBtnPerPage;
+        else
+            btnStart = 1 + (currentPageNum/pageBtnPerPage)*pageBtnPerPage;
+
+        if (btnStart + pageBtnPerPage < pageBtnCnt)
+            btnEnd = btnStart + pageBtnPerPage;
+        else
+            btnEnd = pageBtnCnt;
+
+
+        if (btnStart == 1) {
+            for (int i = 0; i < btnEnd; i++) {
+                if (btnStart + pageBtnPerPage < pageBtnCnt && i == btnEnd-1) {
+                    PageBtn pageBtn = new PageBtn("다음>", i+1);
+                    pageBtns.add(pageBtn);
+                }
+                else {
+                    PageBtn pageBtn = new PageBtn(Integer.toString(i+1), i+1);
+                    pageBtns.add(pageBtn);
+                }
+            }
+        }
+        else if (btnStart > pageBtnPerPage) {
+            for (int i = btnStart-1; i < btnEnd+1; i++) {
+                if (i == btnStart-1) {
+                    PageBtn pageBtn = new PageBtn("<이전", i);
+                    pageBtns.add(pageBtn);
+                }
+                else if (btnStart + pageBtnPerPage <= pageBtnCnt && i == btnEnd) {
+                    PageBtn pageBtn = new PageBtn("다음>", i);
+                    pageBtns.add(pageBtn);
+                }
+                else {
+                    PageBtn pageBtn = new PageBtn(Integer.toString(i), i);
+                    pageBtns.add(pageBtn);
+                }
+            }
         }
 
         return pageBtns;
     }
 
-    public List<Post> setPageList(int pageNum) {
+    public List<Post> setPageList(int currentPageNum) {
         List<Post> posts;
-        int postListStart = postCntPerPage*(pageNum-1);
+        int postListStart = postCntPerPage*(currentPageNum-1);
 
         posts = postRepository.findPostLimited(postListStart, postCntPerPage);
 
         return posts;
     }
 
+    public int getCurrentPage(int post_id) {
+        int currentPageNum = 0;
+        int startPostId = postRepository.getFirstPostId();
 
+        for (int i = 0; i < this.pageBtnCnt; i++) {
+            //System.out.printf("%d\n",  startPostId + postCntPerPage*i);
 
+            if (post_id >= (startPostId + postCntPerPage*i) && post_id <= (startPostId + postCntPerPage*(i+1))) {
+                currentPageNum = i;
+                break;
+            }
+        }
 
+        //System.out.printf("PageService : getCurrentPage()\n-> currentPage : %d\n", currentPageNum);
 
-
-
+        return currentPageNum+1;
+    }
 
 }

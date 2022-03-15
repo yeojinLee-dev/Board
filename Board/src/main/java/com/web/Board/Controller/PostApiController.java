@@ -5,6 +5,7 @@ import com.web.Board.Service.PostService;
 import com.web.Board.Domain.Post.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,10 +48,10 @@ public class PostApiController {
     public int checkAuthor(@PathVariable int post_id, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login_id = (String)session.getAttribute("login_id");
-        System.out.printf("controller -> checkAuthor() : login_id=%s\n", login_id);
+        //System.out.printf("controller -> checkAuthor() : login_id=%s\n", login_id);
 
         String author = postService.findByPost_Id(post_id).getMember().getLogin_id();
-        System.out.printf("controller -> checkAuthor() : author=%s\n", author);
+        //System.out.printf("controller -> checkAuthor() : author=%s\n", author);
 
 
         int isSameAuthor;

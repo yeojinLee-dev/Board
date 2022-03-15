@@ -16,6 +16,7 @@
                     </select>
                 </label>
             </div>
+            <input type="text" id="last_page", value={{lastPage}} style="display: none">
             <div class="form-group">
                 <label for="title">제목</label>
                 <input type="text" class="form-control" id="title" placeholder="제목 입력"><br><br>
@@ -29,7 +30,7 @@
                 <textarea class="form-control" id="content" placeholder="내용을 입력하세요" ></textarea><br><br>
             </div>
         </form>
-        <a href="/post/list" role="button" class="btn btn-secondary">취소</a>
+        <a href="/post/list/1" role="button" class="btn btn-secondary">취소</a>
         <button type="button" class="btn btn-primary" id="btn-save">등록</button>
 
     </div>

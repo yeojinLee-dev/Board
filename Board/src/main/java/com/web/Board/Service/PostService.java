@@ -48,4 +48,13 @@ public class PostService {
     public int deletePost(int post_id) {
         return postRepository.deletePost(post_id);
     }
+
+    public int getFirstPost_Id() {
+        return postRepository.getFirstPostId();
+    }
+
+    public int getLastPost_Id() {
+        return postRepository.getLastPostId();
+    }
+
 }

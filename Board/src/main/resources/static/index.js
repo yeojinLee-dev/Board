@@ -22,13 +22,8 @@ var main = {
         $('#btn-delete').on('click',function () {
             _this.deletePost();
         });
-/*
-        $('#btn-title').on('click', function () {
-            console.log('init() #btn-title.on(click) => ok');
-            _this.checkAuthor();
-        });
-*/
-        console.log('init()');
+
+        //console.log('init()');
     },
     join : function () {
         var data = {
@@ -131,6 +126,7 @@ var main = {
     savePost : function () {
 
         var sCategory = $("select[name=category] > option:selected").val();
+        var last_page = $("#lastPage").val();
 
         var data = {
             title: $('#title').val(),
@@ -149,7 +145,7 @@ var main = {
             data : JSON.stringify(data)
         }).done(function () {
             alert('게시글을 등록하였습니다.');
-            window.location.href = '/post/list';
+            window.location.href = '/post/list/' + parseInt(last_page);
         }).fail(function (error){
             alert(JSON.stringify(error));
         })
@@ -182,7 +178,7 @@ var main = {
     deletePost : function () {
         var post_id = $('#post_id').val();
 
-        console.log(post_id);
+        console.log("deletePost() => %d", post_id);
 
         $.ajax({
             type : 'DELETE',
@@ -191,7 +187,7 @@ var main = {
             contentType : 'application/json; charset=utf-8',
         }).done(function () {
             alert('삭제되었습니다.');
-            window.location.href = '/post/list';
+            window.location.href = '/post/list/1';
         }).fail(function (error) {
             alert('삭제 중 오류가 발생하였습니다.');
         })

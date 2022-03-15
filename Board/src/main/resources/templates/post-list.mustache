@@ -32,11 +32,11 @@
     {{/postList}}
     </tbody>
 
-    <div style="text-align: center;">
-        <br><br>
-        <table>
+    <br><br>
+    <div style="align-content: center;">
+        <table style="margin-left: auto;margin-right: auto;width: 300px">
             {{#pageBtn}}
-                <th><a type="button" href="/post/list/{{p  ageNum}}">{{pageNum}}</a></th>
+                <th><a type="button" id="btn-pageNum" href="/post/list/{{pageNumParam}}">{{pageNum}}</a></th>
             {{/pageBtn}}
         </table>
     </div>

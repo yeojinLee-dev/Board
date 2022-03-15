@@ -54,12 +54,12 @@ public class PostRepository {
         List<Post> post = jdbcTemplate.query("select * from board.POST where POST_ID = ? limit 1", PostRowMapper(), post_id);
         post = getMembernCategory(post);
 
-        System.out.printf("postRepository -> findByPost_Id()\n post_id : %d\n", post.get(0).getPost_id());
+        //System.out.printf("postRepository -> findByPost_Id()\n post_id : %d\n", post.get(0).getPost_id());
         return post.get(0);
     }
 
     public int updatePost(Post post) {
-        System.out.printf("postRepository -> updatePost()\n 수정된 게시물 번호 : %d\n", post.getPost_id());
+        //System.out.printf("postRepository -> updatePost()\n 수정된 게시물 번호 : %d\n", post.getPost_id());
 
         return jdbcTemplate.update("update board.Post set CATEGORY_ID = ?, TITLE = ?, CONTENT = ? where POST_ID = ?", post.getCategory_id(),
                 post.getTitle(), post.getContent(), post.getPost_id());
@@ -84,9 +84,18 @@ public class PostRepository {
         return posts;
     }
 
-    public int countPost() {
+    public int countTotalPost() {
         return jdbcTemplate.queryForObject("select count(*) from board.POST", Integer.class);
     }
+
+    public int getFirstPostId() {
+        return jdbcTemplate.queryForObject("select post_id from board.POST order by post_id asc limit 1;", Integer.class);
+    }
+
+    public int getLastPostId() {
+        return jdbcTemplate.queryForObject("select post_id from board.POST order by post_id desc limit 1;", Integer.class);
+    }
+
 
     private RowMapper<Post> PostRowMapper() {
         return (rs, rowNum) -> {

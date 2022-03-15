@@ -36,7 +36,7 @@
                 <textarea class="form-control" id="content" readonly>{{post.content}}</textarea><br><br>
             </div>
         </form>
-        <a href="/post/list" role="button" class="btn btn-secondary">목록</a>
+        <a href="/post/list/{{currentPage}}" role="button" class="btn btn-secondary">목록</a>
             <a href="/post/update/{{post_id}}" id="btn-update-read" role="button" class="btn btn-primary">수정</a>
             <button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
     </div>
@@ -44,6 +44,7 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/index.js"></script>
 
 <script>
     function checkAuthor() {
