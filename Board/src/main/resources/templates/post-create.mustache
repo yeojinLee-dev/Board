@@ -1,6 +1,4 @@
 {{>layout/header}}
-
-
 <div class="col-md-12">
     <h2>게시글 등록</h2><br>
     <div class="col-md-6">
@@ -12,11 +10,12 @@
                         {{#category}}
                             <option value={{category_id}}>{{name}}</option>
                         {{/category}}
-
                     </select>
                 </label>
             </div>
-            <input type="text" id="last_page", value={{lastPage}} style="display: none">
+            <label for="last_page"></label><input type="hidden" id="last_page" value={{last_page}}><br>
+            <label for="seq_num"></label><input type="hidden" id="seq_num" value={{seq_num}}><br>
+
             <div class="form-group">
                 <label for="title">제목</label>
                 <input type="text" class="form-control" id="title" placeholder="제목 입력"><br><br>

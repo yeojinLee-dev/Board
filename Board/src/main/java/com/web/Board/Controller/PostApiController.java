@@ -53,7 +53,6 @@ public class PostApiController {
         String author = postService.findByPost_Id(post_id).getMember().getLogin_id();
         //System.out.printf("controller -> checkAuthor() : author=%s\n", author);
 
-
         int isSameAuthor;
 
         if (login_id.equals(author))

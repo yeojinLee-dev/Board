@@ -29,7 +29,10 @@
                 <textarea class="form-control" id="content" placeholder="내용을 입력하세요" >{{post.content}}</textarea><br><br>
             </div>
         </form>
-        <a href="/post/read/{{post.post_id}}" role="button" class="btn btn-secondary">취소</a>
+        <label for="currentPage">
+            <input type="hidden" id="currentPage" value={{currentPage}}>
+        </label>
+        <a href="/post/read/{{post.post_id}}&page={{currentPage}}" role="button" class="btn btn-secondary">{{currentPage}}취소</a>
         <button type="button" class="btn btn-primary" id="btn-update">완료</button>
     </div>
 </div>

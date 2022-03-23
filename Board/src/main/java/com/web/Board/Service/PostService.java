@@ -8,15 +8,12 @@ import com.web.Board.Domain.Post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
-
 
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
@@ -28,11 +25,11 @@ public class PostService {
         return postRepository.savePost(post);
     }
 
-    public List<Post> findAllPostList() {
-        List<Post> post = postRepository.findAllPost();
+    public List<Post> findAllPost() {
+        List<Post> posts = postRepository.findAllPost();
         LocalDateTime now = LocalDateTime.now();
 
-        return post;
+        return posts;
     }
 
     public Post findByPost_Id(int post_id) {
@@ -55,6 +52,10 @@ public class PostService {
 
     public int getLastPost_Id() {
         return postRepository.getLastPostId();
+    }
+
+    public int getPostCnt() {
+        return postRepository.countTotalPost();
     }
 
 }

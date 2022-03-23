@@ -24,7 +24,7 @@
     <tr>
         <td id="post_id">{{post_id}}</td>
         <td>{{category.name}}</td>
-        <td><a type="button" href="/post/read/{{post_id}}" id="btn-title">{{title}}</a></td>
+        <td><a type="button" href="/post/read/{{post_id}}&page={{currentPage}}" id="btn-title">{{title}}</a></td>
         <td>{{member.login_id}}</td>
         <td>{{created_date}}</td>
         <!-- 수정 날짜 -->
@@ -40,9 +40,5 @@
             {{/pageBtn}}
         </table>
     </div>
-
-
-</table>
-
 
 {{>layout/footer}}

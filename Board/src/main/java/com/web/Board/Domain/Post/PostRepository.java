@@ -3,6 +3,7 @@ package com.web.Board.Domain.Post;
 import com.web.Board.Domain.Category.Category;
 import com.web.Board.Domain.Member.Member;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -33,6 +34,7 @@ public class PostRepository {
                 //post.getMember().getLogin_id(), post.getContent(), post.getCategory_id()));
         LocalDateTime postSaveTime = LocalDateTime.now();
         jdbcTemplate.update(sql, post.getTitle(), post.getMember().getLogin_id(), post.getContent(), post.getCategory_id(), postSaveTime);
+
         return 1;
     }
 
@@ -60,7 +62,6 @@ public class PostRepository {
 
     public int updatePost(Post post) {
         //System.out.printf("postRepository -> updatePost()\n 수정된 게시물 번호 : %d\n", post.getPost_id());
-
         return jdbcTemplate.update("update board.Post set CATEGORY_ID = ?, TITLE = ?, CONTENT = ? where POST_ID = ?", post.getCategory_id(),
                 post.getTitle(), post.getContent(), post.getPost_id());
     }
@@ -89,13 +90,32 @@ public class PostRepository {
     }
 
     public int getFirstPostId() {
-        return jdbcTemplate.queryForObject("select post_id from board.POST order by post_id asc limit 1;", Integer.class);
+        int firstPost_Id;
+
+        try {
+            firstPost_Id = jdbcTemplate.queryForObject("select post_id from board.POST order by post_id asc limit 1;", Integer.class);
+        } catch (Exception e) {
+            firstPost_Id = 0;
+        }
+
+        System.out.printf("first page number => %d\n", firstPost_Id);
+
+        return firstPost_Id;
     }
 
     public int getLastPostId() {
-        return jdbcTemplate.queryForObject("select post_id from board.POST order by post_id desc limit 1;", Integer.class);
-    }
+        int lastPost_Id = 0;
 
+        try {
+            lastPost_Id = jdbcTemplate.queryForObject("select post_id from board.POST order by post_id desc limit 1;", Integer.class);
+        } catch (Exception e) {
+            lastPost_Id = 0;
+        }
+
+        System.out.printf("last page number => %d\n", lastPost_Id);
+
+        return lastPost_Id;
+    }
 
     private RowMapper<Post> PostRowMapper() {
         return (rs, rowNum) -> {

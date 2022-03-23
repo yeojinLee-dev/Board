@@ -36,36 +36,37 @@ public class IndexController {
     }
 
     @GetMapping("/post/list/{pageNumParam}")
-    public String postList(Model postList, Model Login_Id, Model pageBtn, HttpServletRequest request, @PathVariable int pageNumParam) {
+    public String postList(Model postList, Model Login_Id, Model pageBtn, Model currentPage, HttpServletRequest request, @PathVariable int pageNumParam) {
         HttpSession session = request.getSession();
         String login_id = (String) session.getAttribute("login_id");
 
         Login_Id.addAttribute("login_id", login_id);
+
         postList.addAttribute("postList", pageService.setPageList(pageNumParam));
         //System.out.printf("IndexController.postList() : postList");
 
         pageBtn.addAttribute("pageBtn", pageService.setPageBtn(pageNumParam));
         //System.out.printf("IndexController.postList() : pageBtn");
 
-        /*
-        List<PageBtn> btns = pageService.setPageBtn(currentPageNum);
+        currentPage.addAttribute("currentPage",  pageNumParam);
+        System.out.printf("IndexController.postList() : currentPage : %d\n", pageNumParam);
 
-        for (int i = 0; i < btns.size(); i++)
-            System.out.printf("IndexController : pageBtn Model\n-> %d", btns.get(i).getPageNum());
-        */
         return "post-list";
     }
 
     @GetMapping("/post/create")
-    public String createPost(Model member, Model category, Model lastPage, HttpServletRequest request) {
+    public String createPost(Model member, Model category, Model last_page, Model seq_num, HttpServletRequest request) {
         HttpSession session = request.getSession();
 
         String login_id = (String) session.getAttribute("login_id");
+        int post_seq_num = postService.getPostCnt() + 1;
 
+        seq_num.addAttribute("seq_num", post_seq_num);
         member.addAttribute("login_id", login_id);
         category.addAttribute("category", categoryService.findAllCategory());
-        lastPage.addAttribute("lastPage", pageService.getCurrentPage(postService.getLastPost_Id()));
+        last_page.addAttribute("last_page", pageService.getCurrentPage(post_seq_num));
 
+        System.out.printf("\nIndexController -> createPost()\nlast_page : %d\n", pageService.getCurrentPage(post_seq_num));
         return "post-create";
     }
 
@@ -74,23 +75,27 @@ public class IndexController {
         return "member-info";
     }
 
-    @GetMapping("/post/read/{post_id}")
-    public String readPost(@PathVariable int post_id, Model Post, Model Login_id, Model CurrentPage, HttpServletRequest request) {
+    @GetMapping("/post/read/{post_id}&page={currentPage}")
+    public String readPost(@PathVariable int post_id, @PathVariable int currentPage,
+                           Model Post, Model Login_id, Model CurrentPage, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login_id = (String) session.getAttribute("login_id");
 
         Login_id.addAttribute("login_id", login_id);
         Post.addAttribute("post", postService.findByPost_Id(post_id));
-        CurrentPage.addAttribute("currentPage", pageService.getCurrentPage(post_id));
+        CurrentPage.addAttribute("currentPage", currentPage);
 
-        // System.out.printf("controller -> postRead() : %s\n%s", postService.findByPost_Id(post_id).getTitle(), postService.findByPost_Id(post_id).getCategory().getName());
+        System.out.printf("IndexController -> readPost()\n currentPage : %d\n", currentPage);
+
+
         return "post-read";
     }
 
-    @GetMapping("/post/update/{post_id}")
-    public String readPostToUpdate(@PathVariable int post_id, Model Post, Model Category, HttpServletRequest request) {
+    @GetMapping("/post/update/{post_id}&page={currentPage}")
+    public String readPostToUpdate(@PathVariable int post_id, @PathVariable int currentPage, Model CurrentPage, Model Post, Model Category) {
         Post.addAttribute("post", postService.findByPost_Id(post_id));
         Category.addAttribute("category", categoryService.findAllCategory());
+        CurrentPage.addAttribute("currentPage", currentPage);
 
         return "post-modify";
 

@@ -126,17 +126,20 @@ var main = {
     savePost : function () {
 
         var sCategory = $("select[name=category] > option:selected").val();
-        var last_page = $("#lastPage").val();
+        var last_page = parseInt($('#last_page').val());
+
+        console.log("마지막 페이지 번호 :" + last_page);
 
         var data = {
             title: $('#title').val(),
             login_id: $('#login_id').val(),
             content: $('#content').val(),
-            category_id : parseInt(sCategory)
+            category_id : parseInt(sCategory),
+            seq_num : $('#seq_num').val()
         };
 
         console.log("게시물 : ", data);
-
+        
         $.ajax({
             type : 'POST',
             url : '/api/post/create',
@@ -145,13 +148,14 @@ var main = {
             data : JSON.stringify(data)
         }).done(function () {
             alert('게시글을 등록하였습니다.');
-            window.location.href = '/post/list/' + parseInt(last_page);
+            window.location.href = '/post/list/' + last_page;
         }).fail(function (error){
             alert(JSON.stringify(error));
         })
     },
     updatePost : function () {
         var sCategory = $("select[name=category] > option:selected").val();
+        var currentPage = parseInt($('#currentPage').val());
 
         var data = {
             post_id : parseInt($('#post_id').val()),
@@ -160,7 +164,7 @@ var main = {
             category_id : parseInt(sCategory),
         };
 
-        console.log("게시물 : ", data);
+        console.log("currentPage : %d", currentPage);
 
         $.ajax({
             type : 'PUT',
@@ -170,7 +174,7 @@ var main = {
             data : JSON.stringify(data),
         }).done(function () {
             alert('수정이 완료되었습니다.');
-            window.location.href = '/post/read/' + data.post_id;
+            window.location.href = '/post/read/' + data.post_id + '&page=' + currentPage;
         }).fail(function (error){
             alert(JSON.stringify(error));
         })

@@ -14,9 +14,10 @@ import java.util.List;
 public class PageService {
 
     private final PostRepository postRepository;
+    private final PostService postService;
 
     final int postCntPerPage = 10;
-    int pageBtnCnt;
+    int pageBtnCnt = 1;
     final int pageBtnPerPage = 5;
 
     public void setPageConfig() {
@@ -24,6 +25,17 @@ public class PageService {
 
         if (postTotalCnt%postCntPerPage > 0)
             this.pageBtnCnt = postTotalCnt/postCntPerPage + 1;
+        else if (postTotalCnt == 0)
+            this.pageBtnCnt = 1;
+        else
+            this.pageBtnCnt = postTotalCnt/postCntPerPage;
+    }
+
+    public void setPageConfig(int postTotalCnt) {
+        if (postTotalCnt%postCntPerPage > 0)
+            this.pageBtnCnt = postTotalCnt/postCntPerPage + 1;
+        else if (postTotalCnt == 0)
+            this.pageBtnCnt = 1;
         else
             this.pageBtnCnt = postTotalCnt/postCntPerPage;
     }
@@ -48,7 +60,7 @@ public class PageService {
         if (btnStart == 1) {
             for (int i = 0; i < btnEnd; i++) {
                 if (btnStart + pageBtnPerPage < pageBtnCnt && i == btnEnd-1) {
-                    PageBtn pageBtn = new PageBtn("다음>", i+1);
+                    PageBtn pageBtn = new PageBtn(">>", i+1);
                     pageBtns.add(pageBtn);
                 }
                 else {
@@ -60,11 +72,11 @@ public class PageService {
         else if (btnStart > pageBtnPerPage) {
             for (int i = btnStart-1; i < btnEnd+1; i++) {
                 if (i == btnStart-1) {
-                    PageBtn pageBtn = new PageBtn("<이전", i);
+                    PageBtn pageBtn = new PageBtn("<<", i);
                     pageBtns.add(pageBtn);
                 }
                 else if (btnStart + pageBtnPerPage <= pageBtnCnt && i == btnEnd) {
-                    PageBtn pageBtn = new PageBtn("다음>", i);
+                    PageBtn pageBtn = new PageBtn(">>", i);
                     pageBtns.add(pageBtn);
                 }
                 else {
@@ -79,6 +91,7 @@ public class PageService {
 
     public List<Post> setPageList(int currentPageNum) {
         List<Post> posts;
+
         int postListStart = postCntPerPage*(currentPageNum-1);
 
         posts = postRepository.findPostLimited(postListStart, postCntPerPage);
@@ -86,22 +99,22 @@ public class PageService {
         return posts;
     }
 
-    public int getCurrentPage(int post_id) {
+    public int getCurrentPage(int seq_num) {
         int currentPageNum = 0;
-        int startPostId = postRepository.getFirstPostId();
 
+        setPageConfig(seq_num);
         for (int i = 0; i < this.pageBtnCnt; i++) {
             //System.out.printf("%d\n",  startPostId + postCntPerPage*i);
 
-            if (post_id >= (startPostId + postCntPerPage*i) && post_id <= (startPostId + postCntPerPage*(i+1))) {
-                currentPageNum = i;
+            if (seq_num >= (1 + postCntPerPage*i) && seq_num < (1 + postCntPerPage*(i+1))) {
+                currentPageNum = i+1;
                 break;
             }
         }
 
-        //System.out.printf("PageService : getCurrentPage()\n-> currentPage : %d\n", currentPageNum);
+        System.out.printf("PageService : getCurrentPage()\n-> currentPage : %d\n", currentPageNum);
 
-        return currentPageNum+1;
+        return currentPageNum;
     }
 
 }
