@@ -6,6 +6,7 @@ import com.web.Board.Service.CategoryService;
 import com.web.Board.Service.MemberService;
 import com.web.Board.Service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,8 +49,8 @@ public class IndexController {
         pageBtn.addAttribute("pageBtn", pageService.setPageBtn(pageNumParam));
         //System.out.printf("IndexController.postList() : pageBtn");
 
-        currentPage.addAttribute("currentPage",  pageNumParam);
-        System.out.printf("IndexController.postList() : currentPage : %d\n", pageNumParam);
+        currentPage.addAttribute("currentPage", pageNumParam);
+        //System.out.printf("IndexController.postList() : currentPage : %d\n", pageNumParam);
 
         return "post-list";
     }
@@ -66,7 +67,7 @@ public class IndexController {
         category.addAttribute("category", categoryService.findAllCategory());
         last_page.addAttribute("last_page", pageService.getCurrentPage(post_seq_num));
 
-        System.out.printf("\nIndexController -> createPost()\nlast_page : %d\n", pageService.getCurrentPage(post_seq_num));
+        //System.out.printf("\nIndexController -> createPost()\nlast_page : %d\n", pageService.getCurrentPage(post_seq_num));
         return "post-create";
     }
 
@@ -85,7 +86,7 @@ public class IndexController {
         Post.addAttribute("post", postService.findByPost_Id(post_id));
         CurrentPage.addAttribute("currentPage", currentPage);
 
-        System.out.printf("IndexController -> readPost()\n currentPage : %d\n", currentPage);
+        //System.out.printf("IndexController -> readPost()\n currentPage : %d\n", currentPage);
 
 
         return "post-read";
@@ -98,6 +99,21 @@ public class IndexController {
         CurrentPage.addAttribute("currentPage", currentPage);
 
         return "post-modify";
-
     }
+
+    @GetMapping("/post/list&search-keyword={search_keyword}")
+    public String searchPost(@PathVariable String search_keyword, Model postList, Model Login_Id, Model pageBtn, Model currentPage, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String login_id = (String) session.getAttribute("login_id");
+
+        //System.out.printf("\nsearchPost : %s\n", search_keyword);
+        Login_Id.addAttribute("login_id", login_id);
+        postList.addAttribute("postList", postService.searchPost(search_keyword));
+        //pageBtn.addAttribute("pageBtn", pageService.setPageBtn(pageNumParam));
+
+        currentPage.addAttribute("currentPage", 1);
+
+        return "post-list";
+    }
+
 }

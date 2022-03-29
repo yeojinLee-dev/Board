@@ -58,4 +58,10 @@ public class PostService {
         return postRepository.countTotalPost();
     }
 
+    public List<Post> searchPost(String search_keyword) {
+        List<Post> posts = postRepository.searchPost(search_keyword);
+
+        return posts;
+    }
+
 }

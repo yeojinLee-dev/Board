@@ -22,6 +22,9 @@ var main = {
         $('#btn-delete').on('click',function () {
             _this.deletePost();
         });
+        $('#btn-post-search').on('click', function () {
+            _this.searchPost();
+        })
 
         //console.log('init()');
     },
@@ -196,31 +199,21 @@ var main = {
             alert('삭제 중 오류가 발생하였습니다.');
         })
     },
-    checkAuthor : function () {
-        var post_id = $('#post_id').val();
+    searchPost : function () {
+         var search_keyword = $('#search_keyword').val();
 
-        console.log('checkAuthor(): post_id=>', post_id);
-
-        $.ajax({
-            type : 'POST',
-            url : '/api/post/read/' + post_id,
-            success : function (isSameAuthor) {
-                console.log(isSameAuthor);
-
-                if (isSameAuthor == 1) {
-                    $('#btn-update-read').css('display', 'inline')
-                    $('#btn-delete').css('display', 'inline')
-                }
-
-                else if (isSameAuthor == 0) {
-                    $('.button_only_author').css('display', 'none')
-                    $('#btn-delete').css('display', 'none')
-                }
-            },
-            error: function () {
-                alert("작성자 확인 중 오류 발생");
-            }
-        })
+         if (search_keyword != '') {
+             $.ajax({
+                 type : 'GET',
+                 url : '/post/list&search-keyword=' + search_keyword,
+                 contentType : 'application/json; charset=utf-8',
+                 success : function () {
+                     window.location.href = '/post/list&search-keyword=' + search_keyword;
+                 }
+             })
+         }
+         else
+             window.location.href = '/post/list/1';
     }
 };
 

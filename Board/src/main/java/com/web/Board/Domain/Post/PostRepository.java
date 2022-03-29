@@ -117,6 +117,15 @@ public class PostRepository {
         return lastPost_Id;
     }
 
+    public List<Post> searchPost(String search_keyword) {
+        //System.out.printf("\nrepository : searchPost -> %s\n", "\'%"+search_keyword+"%\'");
+        List<Post> posts = jdbcTemplate.query("select * from board.POST where TITLE like ?;", PostRowMapper(), "%"+search_keyword+"%");
+
+        posts = getMembernCategory(posts);
+
+        return posts;
+    }
+
     private RowMapper<Post> PostRowMapper() {
         return (rs, rowNum) -> {
             Post post = new Post();

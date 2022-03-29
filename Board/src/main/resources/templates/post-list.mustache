@@ -1,15 +1,22 @@
 {{>layout/header}}
 <!-- 목록 출력 영역 -->
 <table class="table table-horizontal table-bordered">
-    <div class="row" style="padding-left: 25px">
+    <div class="row" style="float: left; width: 33%; padding-left: 25px">
         <div class="col-md-6">
             <a href="/post/create" role="button" class="btn btn-primary ">등록하기</a><br>
         </div>    <!-- "col-md-6" : 화면을 컬럼 단위로 나누었을 때, 그 중 6칸 크기의 그리드를 사용하겠다는 뜻 -->
     </div>
-    <div class="row" style="float: right; padding-right: 25px">
+    <div class="form-group" style="float: left;">
+        <label for="search_keyword"></label><input type="text" id="search_keyword" style="width: 600px" placeholder="제목으로 검색">
+    </div>
+    <div style="float:left; padding-left: 10px">
+        <input type="button" id="btn-post-search" class="btn-secondary" value="검색">
+    </div>
+    <div class="row" style="float: right; padding-right: 25px;">
         <a href="/member/info" role="term">{{login_id}}</a>
         <span>님</span>
     </div>
+
     <thead class="thead-strong">
     <tr>
         <th style="width: 10%;align-content: center;">게시글 번호</th>
@@ -40,5 +47,5 @@
             {{/pageBtn}}
         </table>
     </div>
-
+</table>
 {{>layout/footer}}
