@@ -36,8 +36,8 @@
                 <textarea class="form-control" id="content" readonly>{{post.content}}</textarea><br><br>
             </div>
         </form>
-        <a href="/post/list/{{currentPage}}" role="button" class="btn btn-secondary">목록</a>
-            <a href="/post/update/{{post_id}}&page={{currentPage}}" id="btn-update-read" role="button" class="btn btn-primary">수정</a>
+        <a href="/Board/postList/page={{currentPage}}&query=" role="button" class="btn btn-secondary">목록</a>
+            <a href="/Board/post/update/{{post_id}}&page={{currentPage}}" id="btn-update-read" role="button" class="btn btn-primary">수정</a>
             <button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
     </div>
 </div>

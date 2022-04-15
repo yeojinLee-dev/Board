@@ -3,7 +3,6 @@ package com.web.Board.Domain.Post;
 import com.web.Board.Domain.Category.Category;
 import com.web.Board.Domain.Member.Member;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -38,6 +37,13 @@ public class PostRepository {
         return 1;
     }
 
+    public int countPostByTitle(String searchKeyword) {
+        if (searchKeyword.equals(""))
+            return countTotalPost();
+        else
+            return jdbcTemplate.queryForObject("select count(*) from board.POST where title like ?", Integer.class, "%"+searchKeyword+"%");
+    }
+
     public List<Post> findAllPost() {
         List<Post> posts = jdbcTemplate.query("select * from board.POST", PostRowMapper());
         posts = getMembernCategory(posts);
@@ -45,8 +51,9 @@ public class PostRepository {
         return posts;
     }
 
-    public List<Post> findPostLimited(int limit_start, int pagePostCnt) {
-        List<Post> posts = jdbcTemplate.query("select * from board.POST order by post_id asc limit ?, ?", PostRowMapper(), limit_start, pagePostCnt);
+    public List<Post> findPostLimited(int limit_start, int pagePostCnt, String search_keyword) {
+        List<Post> posts = jdbcTemplate.query("select * from board.POST where TITLE like ? order by post_id asc limit ?, ?;"
+                , PostRowMapper(),  "%"+search_keyword+"%", limit_start, pagePostCnt);
         posts = getMembernCategory(posts);
 
         return posts;
@@ -98,7 +105,7 @@ public class PostRepository {
             firstPost_Id = 0;
         }
 
-        System.out.printf("first page number => %d\n", firstPost_Id);
+        //System.out.printf("first page number => %d\n", firstPost_Id);
 
         return firstPost_Id;
     }
@@ -112,7 +119,7 @@ public class PostRepository {
             lastPost_Id = 0;
         }
 
-        System.out.printf("last page number => %d\n", lastPost_Id);
+        //System.out.printf("last page number => %d\n", lastPost_Id);
 
         return lastPost_Id;
     }

@@ -1,6 +1,5 @@
 package com.web.Board.Service;
 
-import com.web.Board.Domain.Category.Category;
 import com.web.Board.Domain.Category.CategoryRepository;
 import com.web.Board.Domain.Member.MemberRepository;
 import com.web.Board.Domain.Post.Post;

@@ -1,12 +1,10 @@
 package com.web.Board.Controller;
 
-import com.web.Board.Domain.Post.PageBtn;
 import com.web.Board.Service.PageService;
 import com.web.Board.Service.CategoryService;
 import com.web.Board.Service.MemberService;
 import com.web.Board.Service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -30,32 +27,33 @@ public class IndexController {
         //model.addAttribute("post", postService.findAll());
         return "login";
     }
-
     @GetMapping("/member/join")
     public String join() {
         return "join";
     }
 
-    @GetMapping("/post/list/{pageNumParam}")
-    public String postList(Model postList, Model Login_Id, Model pageBtn, Model currentPage, HttpServletRequest request, @PathVariable int pageNumParam) {
+    @GetMapping("/Board/postList/page={pageNum}&query={searchKeyword}")
+    public String postList(@PathVariable int pageNum, @PathVariable String searchKeyword, Model postList,
+                           Model Login_Id, Model pageBtn, Model currentPage, Model search_keyword, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login_id = (String) session.getAttribute("login_id");
 
         Login_Id.addAttribute("login_id", login_id);
 
-        postList.addAttribute("postList", pageService.setPageList(pageNumParam));
+        postList.addAttribute("postList", pageService.setPageList(pageNum, searchKeyword));
         //System.out.printf("IndexController.postList() : postList");
 
-        pageBtn.addAttribute("pageBtn", pageService.setPageBtn(pageNumParam));
+        pageBtn.addAttribute("pageBtn", pageService.setPageBtn(pageNum, searchKeyword));
         //System.out.printf("IndexController.postList() : pageBtn");
 
-        currentPage.addAttribute("currentPage", pageNumParam);
+        currentPage.addAttribute("currentPage", pageNum);
         //System.out.printf("IndexController.postList() : currentPage : %d\n", pageNumParam);
 
+        search_keyword.addAttribute("searchKeyword", searchKeyword);
         return "post-list";
     }
 
-    @GetMapping("/post/create")
+    @GetMapping("/Board/post/create")
     public String createPost(Model member, Model category, Model last_page, Model seq_num, HttpServletRequest request) {
         HttpSession session = request.getSession();
 
@@ -76,7 +74,7 @@ public class IndexController {
         return "member-info";
     }
 
-    @GetMapping("/post/read/{post_id}&page={currentPage}")
+    @GetMapping("/Board/post/read/{post_id}&page={currentPage}")
     public String readPost(@PathVariable int post_id, @PathVariable int currentPage,
                            Model Post, Model Login_id, Model CurrentPage, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -92,7 +90,7 @@ public class IndexController {
         return "post-read";
     }
 
-    @GetMapping("/post/update/{post_id}&page={currentPage}")
+    @GetMapping("/Board/post/update/{post_id}&page={currentPage}")
     public String readPostToUpdate(@PathVariable int post_id, @PathVariable int currentPage, Model CurrentPage, Model Post, Model Category) {
         Post.addAttribute("post", postService.findByPost_Id(post_id));
         Category.addAttribute("category", categoryService.findAllCategory());
@@ -101,19 +99,21 @@ public class IndexController {
         return "post-modify";
     }
 
-    @GetMapping("/post/list&search-keyword={search_keyword}")
-    public String searchPost(@PathVariable String search_keyword, Model postList, Model Login_Id, Model pageBtn, Model currentPage, HttpServletRequest request) {
+    /*
+    @GetMapping("/Board/post/list&search.keyword={search_keyword}&pageNum={pageNumParam}")
+    public String searchPost(@PathVariable String search_keyword, @PathVariable int pageNumParam,
+                             Model postList, Model Login_Id, Model pageBtn, Model currentPage, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login_id = (String) session.getAttribute("login_id");
 
         //System.out.printf("\nsearchPost : %s\n", search_keyword);
         Login_Id.addAttribute("login_id", login_id);
         postList.addAttribute("postList", postService.searchPost(search_keyword));
-        //pageBtn.addAttribute("pageBtn", pageService.setPageBtn(pageNumParam));
+        pageBtn.addAttribute("pageBtn", pageService.setPageBtn(pageNumParam, ""));
 
-        currentPage.addAttribute("currentPage", 1);
+        currentPage.addAttribute("currentPage", pageNumParam);
 
         return "post-list";
     }
-
+    */
 }

@@ -3,7 +3,7 @@
 <table class="table table-horizontal table-bordered">
     <div class="row" style="float: left; width: 33%; padding-left: 25px">
         <div class="col-md-6">
-            <a href="/post/create" role="button" class="btn btn-primary ">등록하기</a><br>
+            <a href="/Board/post/create" role="button" class="btn btn-primary ">등록하기</a><br>
         </div>    <!-- "col-md-6" : 화면을 컬럼 단위로 나누었을 때, 그 중 6칸 크기의 그리드를 사용하겠다는 뜻 -->
     </div>
     <div class="form-group" style="float: left;">
@@ -31,7 +31,7 @@
     <tr>
         <td id="post_id">{{post_id}}</td>
         <td>{{category.name}}</td>
-        <td><a type="button" href="/post/read/{{post_id}}&page={{currentPage}}" id="btn-title">{{title}}</a></td>
+        <td><a type="button" href="/Board/post/read/{{post_id}}&page={{currentPage}}" id="btn-title">{{title}}</a></td>
         <td>{{member.login_id}}</td>
         <td>{{created_date}}</td>
         <!-- 수정 날짜 -->
@@ -43,7 +43,7 @@
     <div style="align-content: center;">
         <table style="margin-left: auto;margin-right: auto;width: 300px">
             {{#pageBtn}}
-                <th><a type="button" id="btn-pageNum" href="/post/list/{{pageNumParam}}">{{pageNum}}</a></th>
+                <th><a type="button" id="btn-pageNum" href="/Board/postList/page={{pageNumber}}&query={{searchKeyword}}">{{button}}</a></th>
             {{/pageBtn}}
         </table>
     </div>
