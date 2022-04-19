@@ -1,9 +1,7 @@
 package com.web.Board.Controller;
 
-import com.web.Board.Service.PageService;
-import com.web.Board.Service.CategoryService;
-import com.web.Board.Service.MemberService;
-import com.web.Board.Service.PostService;
+import com.web.Board.Domain.Comment.Comment;
+import com.web.Board.Service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -21,6 +20,7 @@ public class IndexController {
     private final MemberService memberService;
     private final CategoryService categoryService;
     private final PageService pageService;
+    private final CommentService commentService;
 
     @GetMapping("/")
     public String login() {
@@ -76,15 +76,17 @@ public class IndexController {
 
     @GetMapping("/Board/post/read/{post_id}&page={currentPage}")
     public String readPost(@PathVariable int post_id, @PathVariable int currentPage,
-                           Model Post, Model Login_id, Model CurrentPage, HttpServletRequest request) {
+                           Model Post, Model Login_id, Model CurrentPage, Model Comment, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login_id = (String) session.getAttribute("login_id");
 
         Login_id.addAttribute("login_id", login_id);
         Post.addAttribute("post", postService.findByPost_Id(post_id));
         CurrentPage.addAttribute("currentPage", currentPage);
+        Comment.addAttribute("comment", commentService.findByPost_Id(post_id));
+        List<Comment> comments = commentService.findByPost_Id(post_id);
 
-        //System.out.printf("IndexController -> readPost()\n currentPage : %d\n", currentPage);
+        //System.out.printf("\nIndexController -> readPost()\n comment : %s\n", comments.get(0).getContent());
 
 
         return "post-read";

@@ -24,6 +24,9 @@ var main = {
         });
         $('#btn-post-search').on('click', function () {
             _this.searchPost();
+        });
+        $('#btn-comment').on('click', function () {
+            _this.saveComment();
         })
 
         //console.log('init()');
@@ -217,6 +220,28 @@ var main = {
          }
          else
              window.location.href = '/Board/postList/page=1&query=' + search_keyword;
+    },
+    saveComment : function () {
+        var data = {
+            content : $('#comment_content').val(),
+            post_id : $('#post_id').val()
+        }
+
+        console.log(data);
+
+        var page = $('#currentPage').val();
+
+        $.ajax({
+            type : 'POST',
+            url : '/api/comment',
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            data : JSON.stringify(data)
+        }).done(function () {
+            window.location.href = '/Board/post/read/' + data.post_id + '&page=' + page;
+        }).fail(function () {
+            alert('댓글 작성 중 오류 발생');
+        })
     }
 };
 

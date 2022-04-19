@@ -1,5 +1,7 @@
 package com.web.Board.Controller;
 
+import com.web.Board.Domain.Comment.Comment;
+import com.web.Board.Service.CommentService;
 import com.web.Board.Service.MemberService;
 import com.web.Board.Service.PostService;
 import com.web.Board.Domain.Post.Post;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpSession;
 public class PostApiController {
     private final PostService postService;
     private final MemberService memberService;
+    private final CommentService commentService;
 
     @ResponseBody
     @PostMapping("/api/post/create")
@@ -60,5 +63,15 @@ public class PostApiController {
             isSameAuthor = 0;
 
         return isSameAuthor;
+    }
+
+    @ResponseBody
+    @PostMapping("/api/comment")
+    public int saveComment(@RequestBody Comment comment, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String login_id = (String)session.getAttribute("login_id");
+
+        System.out.printf("controller -> saveComment() : comment login_id=%s\n", login_id);
+        return commentService.saveComment(comment, login_id);
     }
 }

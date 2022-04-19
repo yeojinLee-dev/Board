@@ -11,7 +11,6 @@
     </div>
 </div>
 
-
 <div class="col-md-12">
     <h2>게시글 조회</h2><br>
     <div class="row" style="float: right; padding-right: 25px">
@@ -21,7 +20,7 @@
     <div class="col-md-6">
         <h5 id="category" style="color: #6A82FB;font-size: small">{{post.category.name}} ></h5>
         <form>
-            <input type="text" id="post_id", value={{post.post_id}} style="display: none">
+            <input type="text" id="post_id" value={{post.post_id}} style="display: none">
             <div class="form-group">
                 <label for="title">제목</label>
                 <input type="text" class="form-control" id="title" value="{{post.title}}" readonly>
@@ -36,16 +35,12 @@
                 <textarea class="form-control" id="content" readonly>{{post.content}}</textarea><br><br>
             </div>
         </form>
+        <input type="hidden" id="currentPage" value={{currentPage}}>
         <a href="/Board/postList/page={{currentPage}}&query=" role="button" class="btn btn-secondary">목록</a>
             <a href="/Board/post/update/{{post_id}}&page={{currentPage}}" id="btn-update-read" role="button" class="btn btn-primary">수정</a>
             <button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="/index.js"></script>
-
 <script>
     function checkAuthor() {
         var post_id = $('#post_id').val();
@@ -77,7 +72,40 @@
     $(function() {
         checkAuthor();
     });
-
 </script>
+
+<div class="col-md-6">
+    <br><br><table>
+    <thead class="thead-strong">
+    <tr>
+        <th style="width: 30%;align-content: center;">작성자</th>
+        <th style="width: 40%;align-content: center;">내용</th>
+        <th style="width: 30%;align-content: center;">작성 날짜</th>
+    </tr><br>
+    </thead>
+<tbody id="tbody">
+    {{#comment}}
+    <tr>
+        <td>{{member.name}}</td>
+        <td>{{content}}</td>
+        <td>{{created_date}}</td>
+        </tr>
+    {{/comment}}
+    </tbody>
+</table>
+</div>
+
+<br><div class="col-md-6">
+    <hr style="color: darkgray"><br>
+    <label for="comment">댓글 작성</label>
+    <textarea class="form-control" id="comment_content" placeholder="댓글을 입력하세요" ></textarea><br>
+    <button id="btn-comment" type="button" class="btn btn-primary">작성</button><br><br>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/index.js"></script>
+
+
 </body>
 </html>
