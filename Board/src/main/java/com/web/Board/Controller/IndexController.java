@@ -1,6 +1,7 @@
 package com.web.Board.Controller;
 
 import com.web.Board.Domain.Comment.Comment;
+import com.web.Board.Domain.Post.Post;
 import com.web.Board.Service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -25,6 +27,7 @@ public class IndexController {
     @GetMapping("/")
     public String login() {
         //model.addAttribute("post", postService.findAll());
+
         return "login";
     }
     @GetMapping("/member/join")
@@ -34,7 +37,8 @@ public class IndexController {
 
     @GetMapping("/Board/postList/page={pageNum}&query={searchKeyword}")
     public String postList(@PathVariable int pageNum, @PathVariable String searchKeyword, Model postList,
-                           Model Login_Id, Model pageBtn, Model currentPage, Model search_keyword, HttpServletRequest request) {
+                           Model Login_Id, Model pageBtn, Model currentPage, Model search_keyword,
+                           Model category, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login_id = (String) session.getAttribute("login_id");
 
@@ -48,6 +52,8 @@ public class IndexController {
 
         currentPage.addAttribute("currentPage", pageNum);
         //System.out.printf("IndexController.postList() : currentPage : %d\n", pageNumParam);
+
+        category.addAttribute("category", categoryService.findAllCategory());
 
         search_keyword.addAttribute("searchKeyword", searchKeyword);
         return "post-list";
@@ -76,7 +82,8 @@ public class IndexController {
 
     @GetMapping("/Board/post/read/{post_id}&page={currentPage}")
     public String readPost(@PathVariable int post_id, @PathVariable int currentPage,
-                           Model Post, Model Login_id, Model CurrentPage, Model Comment, HttpServletRequest request) {
+                           Model Post, Model Login_id, Model CurrentPage, Model Comment, Model category,
+                           HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login_id = (String) session.getAttribute("login_id");
 
@@ -84,8 +91,7 @@ public class IndexController {
         Post.addAttribute("post", postService.findByPost_Id(post_id));
         CurrentPage.addAttribute("currentPage", currentPage);
         Comment.addAttribute("comment", commentService.findByPost_Id(post_id));
-        List<Comment> comments = commentService.findByPost_Id(post_id);
-
+        category.addAttribute(("category"), categoryService.findAllCategory());
         //System.out.printf("\nIndexController -> readPost()\n comment : %s\n", comments.get(0).getContent());
 
 

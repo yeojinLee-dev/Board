@@ -16,6 +16,7 @@
         <a href="/member/info" role="term">{{login_id}}</a>
         <span>님</span>
     </div>
+    {{>layout/menu}}
 
     <thead class="thead-strong">
     <tr>
@@ -31,7 +32,7 @@
     <tr>
         <td id="post_id">{{post_id}}</td>
         <td>{{category.name}}</td>
-        <td><a type="button" href="/Board/post/read/{{post_id}}&page={{currentPage}}" id="btn-title">{{title}}</a></td>
+        <td><a type="button" href="/Board/post/read/{{post_id}}&page={{currentPage}}" id="btn-title">{{title}}</a> [{{comment_count}}]</td>
         <td>{{member.login_id}}</td>
         <td>{{created_date}}</td>
         <!-- 수정 날짜 -->

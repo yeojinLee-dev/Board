@@ -52,8 +52,14 @@ public class PostRepository {
     }
 
     public List<Post> findPostLimited(int limit_start, int pagePostCnt, String search_keyword) {
-        List<Post> posts = jdbcTemplate.query("select * from board.POST where TITLE like ? order by post_id asc limit ?, ?;"
-                , PostRowMapper(),  "%"+search_keyword+"%", limit_start, pagePostCnt);
+        List<Post> posts = jdbcTemplate.query("SELECT p.post_id, title, created_date, member_id, category_id, " +
+                        "IF (comment_count IS null, 0, comment_count) AS comment_count " +
+                        "FROM board.POST p " +
+                        "LEFT JOIN (SELECT post_id, COUNT(comment_id) AS comment_count " +
+                            "FROM board.COMMENT GROUP BY post_id) c ON p.post_id = c.post_id " +
+                        "WHERE title LIKE ? " +
+                        "ORDER BY post_id DESC limit ?, ?;"
+                ,PostListRowMapper(),  "%"+search_keyword+"%", limit_start, pagePostCnt);
         posts = getMembernCategory(posts);
 
         return posts;
@@ -74,6 +80,8 @@ public class PostRepository {
     }
 
     public int deletePost(int post_id) {
+        jdbcTemplate.update("delete from board.COMMENT where POST_ID = ?", post_id);
+
         return jdbcTemplate.update("delete from board.POST where POST_ID = ?", post_id);
     }
 
@@ -147,7 +155,19 @@ public class PostRepository {
             return post;
         };
     }
+    private RowMapper<Post> PostListRowMapper() {
+        return (rs, rowNum) -> {
+            Post post = new Post();
 
+            post.setPost_id(rs.getInt("POST_ID"));
+            post.setTitle(rs.getString("TITLE"));
+            post.setMember_id(rs.getInt("MEMBER_ID"));
+            post.setCategory_id(rs.getInt("CATEGORY_ID"));
+            post.setCreated_date(rs.getTimestamp("CREATED_DATE").toLocalDateTime());
+            post.setComment_count((rs.getInt("COMMENT_COUNT")));
+            return post;
+        };
+    }
     private RowMapper<Member> MemberRowMapper() {
         return (rs, rowNum) -> {
             Member member = new Member();

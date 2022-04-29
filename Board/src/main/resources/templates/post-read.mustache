@@ -11,6 +11,8 @@
     </div>
 </div>
 
+{{>layout/menu}}
+
 <div class="col-md-12">
     <h2>게시글 조회</h2><br>
     <div class="row" style="float: right; padding-right: 25px">
@@ -41,6 +43,7 @@
             <button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
     function checkAuthor() {
         var post_id = $('#post_id').val();
@@ -73,7 +76,6 @@
         checkAuthor();
     });
 </script>
-
 <div class="col-md-6">
     <br><br><table>
     <thead class="thead-strong">
@@ -101,11 +103,8 @@
     <textarea class="form-control" id="comment_content" placeholder="댓글을 입력하세요" ></textarea><br>
     <button id="btn-comment" type="button" class="btn btn-primary">작성</button><br><br>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="/index.js"></script>
-
-
 </body>
 </html>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/index.js"></script>

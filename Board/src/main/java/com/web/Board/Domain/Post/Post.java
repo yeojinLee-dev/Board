@@ -31,6 +31,8 @@ public class Post {
 
     private int member_id;
 
+    private int comment_count;
+
     public Post(String title, String content, LocalDateTime created_date, int category_id, int member_id) {
 
         this.title = title;

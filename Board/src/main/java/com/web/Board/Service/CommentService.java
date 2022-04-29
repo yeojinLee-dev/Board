@@ -20,7 +20,7 @@ public class CommentService {
     }
 
     public int saveComment(Comment comment, String login_id) {
-        System.out.printf("service -> saveComment() : comment login_id = %s\n", login_id);
+        //System.out.printf("service -> saveComment() : comment login_id = %s\n", login_id);
         return commentRepository.saveComment(comment, login_id);
     }
 }

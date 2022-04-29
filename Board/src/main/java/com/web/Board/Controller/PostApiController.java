@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 
 @Controller
 @RequiredArgsConstructor
@@ -71,7 +72,7 @@ public class PostApiController {
         HttpSession session = request.getSession();
         String login_id = (String)session.getAttribute("login_id");
 
-        System.out.printf("controller -> saveComment() : comment login_id=%s\n", login_id);
+        //System.out.printf("controller -> saveComment() : comment login_id=%s\n", login_id);
         return commentService.saveComment(comment, login_id);
     }
 }

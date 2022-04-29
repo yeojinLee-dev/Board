@@ -31,12 +31,12 @@ public class MemberRepository {
     }
 
     public List<Member> findByMember_Id(int member_id) {
-        System.out.println("findByMember_Id(member_id) => "+ Integer.toString(member_id));
+        //System.out.println("findByMember_Id(member_id) => "+ Integer.toString(member_id));
         return jdbcTemplate.query("select M.* from board.MEMBER M where M.MEMBER_ID = ? ", MemberRowMapper(), member_id);
     }
 
     public List<Member> findByLogin_Id(String login_id) {
-        System.out.println("findByLogin_Id(login_id) => "+ login_id);
+        //System.out.println("findByLogin_Id(login_id) => "+ login_id);
         return jdbcTemplate.query( "select * from board.MEMBER where LOGIN_ID = ? ", MemberRowMapper(), login_id);
     }
 
