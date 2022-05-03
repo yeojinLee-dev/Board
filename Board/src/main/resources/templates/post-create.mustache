@@ -1,5 +1,4 @@
 {{>layout/header}}
-{{>layout/menu}}
 
 <div class="col-md-12">
     <h2>게시글 등록</h2><br>
@@ -15,7 +14,6 @@
                     </select>
                 </label>
             </div>
-            <label for="last_page"></label><input type="hidden" id="last_page" value={{last_page}}><br>
             <label for="seq_num"></label><input type="hidden" id="seq_num" value={{seq_num}}><br>
 
             <div class="form-group">
@@ -31,7 +29,7 @@
                 <textarea class="form-control" id="content" placeholder="내용을 입력하세요" ></textarea><br><br>
             </div>
         </form>
-        <a href="/Board/postList/page=1&query=" role="button" class="btn btn-secondary">취소</a>
+        <a href="/Board/postList/page=1&category=-1&query=" role="button" class="btn btn-secondary">취소</a>
         <button type="button" class="btn btn-primary" id="btn-save">등록</button>
 
     </div>

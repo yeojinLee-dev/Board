@@ -58,13 +58,13 @@ public class PageService {
         return -1;
     }
 
-    public List<PageBtn> setPageBtn(int page, String searchKeyword) {
+    public List<PageBtn> setPageBtn(int page, String searchKeyword, int category_id) {
         List<PageBtn> pageBtns = new ArrayList<PageBtn>();
         int btnStart = 1, btnEnd;
 
-        setPageConfig(postRepository.countPostByTitle(searchKeyword));
+        setPageConfig(postRepository.countPostByTitleAndCategory(searchKeyword, category_id));
 
-        if (page%pageBtnPerPage  == 0)
+        if (page%pageBtnPerPage == 0)
             btnStart = 1 + (page/pageBtnPerPage-1)*pageBtnPerPage;
         else
             btnStart = 1 + (page/pageBtnPerPage)*pageBtnPerPage;
@@ -107,12 +107,12 @@ public class PageService {
         return pageBtns;
     }
 
-    public List<Post> setPageList(int page, String search_keyword ) {
+    public List<Post> setPageList(int page, String search_keyword, int category_id) {
         List<Post> posts;
 
         int postListStart = size*(page-1);
 
-        posts = postRepository.findPostLimited(postListStart, size, search_keyword);
+        posts = postRepository.findPostLimited(postListStart, size, search_keyword, category_id);
 
         return posts;
     }

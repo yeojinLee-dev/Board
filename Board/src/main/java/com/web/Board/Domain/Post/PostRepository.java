@@ -25,7 +25,6 @@ public class PostRepository {
     public int savePost(Post post) {
         List<Member> member = jdbcTemplate.query( "select * from board.MEMBER where LOGIN_ID = ? ", MemberRowMapper(), post.getMember().getLogin_id());
 
-
         String sql = "insert into board.POST (TITLE, MEMBER_ID, CONTENT, CATEGORY_ID, CREATED_DATE) " +
                 "values (?, (select MEMBER_ID from board.MEMBER where LOGIN_ID = ? limit 1), ?, ?, ?)";
 
@@ -37,11 +36,18 @@ public class PostRepository {
         return 1;
     }
 
-    public int countPostByTitle(String searchKeyword) {
-        if (searchKeyword.equals(""))
+    public int countPostByTitleAndCategory(String searchKeyword, int category_id) {
+        int postCnt = 0;
+
+        if (searchKeyword.equals("") && category_id == -1)
             return countTotalPost();
-        else
-            return jdbcTemplate.queryForObject("select count(*) from board.POST where title like ?", Integer.class, "%"+searchKeyword+"%");
+        else if (category_id != -1){
+            postCnt = jdbcTemplate.queryForObject("select count(*) from board.POST where title like ? and category_id = ?",
+                    Integer.class, "%"+searchKeyword+"%", category_id);
+            //System.out.printf("\nPostRepository -> countPostByTitleAndCategory()\n postCount : %d\n", postCnt);
+        }
+
+        return postCnt;
     }
 
     public List<Post> findAllPost() {
@@ -51,17 +57,30 @@ public class PostRepository {
         return posts;
     }
 
-    public List<Post> findPostLimited(int limit_start, int pagePostCnt, String search_keyword) {
-        List<Post> posts = jdbcTemplate.query("SELECT p.post_id, title, created_date, member_id, category_id, " +
-                        "IF (comment_count IS null, 0, comment_count) AS comment_count " +
-                        "FROM board.POST p " +
-                        "LEFT JOIN (SELECT post_id, COUNT(comment_id) AS comment_count " +
-                            "FROM board.COMMENT GROUP BY post_id) c ON p.post_id = c.post_id " +
-                        "WHERE title LIKE ? " +
-                        "ORDER BY post_id DESC limit ?, ?;"
-                ,PostListRowMapper(),  "%"+search_keyword+"%", limit_start, pagePostCnt);
-        posts = getMembernCategory(posts);
+    public List<Post> findPostLimited(int limit_start, int pagePostCnt, String search_keyword, int category_id) {
+        List<Post> posts;
 
+        if (category_id == -1) {
+            posts = jdbcTemplate.query("SELECT p.post_id, title, created_date, member_id, category_id, " +
+                            "IF (comment_count IS null, 0, comment_count) AS comment_count " +
+                            "FROM board.POST p " +
+                            "LEFT JOIN (SELECT post_id, COUNT(comment_id) AS comment_count " +
+                            "FROM board.COMMENT GROUP BY post_id) c ON p.post_id = c.post_id " +
+                            "WHERE title LIKE ? " +
+                            "ORDER BY post_id DESC limit ?, ?;"
+                    ,PostListRowMapper(),  "%"+search_keyword+"%", limit_start, pagePostCnt);
+        }
+        else {
+            posts = jdbcTemplate.query("SELECT p.post_id, title, created_date, member_id, category_id, " +
+                            "IF (comment_count IS null, 0, comment_count) AS comment_count " +
+                            "FROM board.POST p " +
+                            "LEFT JOIN (SELECT post_id, COUNT(comment_id) AS comment_count " +
+                            "FROM board.COMMENT GROUP BY post_id) c ON p.post_id = c.post_id " +
+                            "WHERE title LIKE ? and category_id = ? " +
+                            "ORDER BY post_id DESC limit ?, ?;"
+                    ,PostListRowMapper(),  "%"+search_keyword+"%", category_id, limit_start, pagePostCnt);
+        }
+        posts = getMembernCategory(posts);
         return posts;
     }
 

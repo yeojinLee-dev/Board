@@ -1,5 +1,4 @@
 {{>layout/header}}
-{{>layout/menu}}
 
 <div class="col-md-12">
     <h2>게시글 수정</h2><br>
@@ -34,8 +33,9 @@
         <label for="currentPage">
             <input type="hidden" id="currentPage" value={{currentPage}}>
         </label>
-        <a href="/Board/post/read/{{post.post_id}}&page={{currentPage}}" role="button" class="btn btn-secondary">취소</a>
+        <a href="/Board/post/read/{{post.post_id}}&page={{currentPage}}&category={{post.category.category_id}}&query={{searchKeyword}}" role="button" class="btn btn-secondary">취소</a>
         <button type="button" class="btn btn-primary" id="btn-update">완료</button>
+        <input id="searchKeyword" type="hidden" value={{searchKeyword}}>
     </div>
 </div>
 

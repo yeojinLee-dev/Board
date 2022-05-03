@@ -11,8 +11,6 @@
     </div>
 </div>
 
-{{>layout/menu}}
-
 <div class="col-md-12">
     <h2>게시글 조회</h2><br>
     <div class="row" style="float: right; padding-right: 25px">
@@ -38,8 +36,8 @@
             </div>
         </form>
         <input type="hidden" id="currentPage" value={{currentPage}}>
-        <a href="/Board/postList/page={{currentPage}}&query=" role="button" class="btn btn-secondary">목록</a>
-            <a href="/Board/post/update/{{post_id}}&page={{currentPage}}" id="btn-update-read" role="button" class="btn btn-primary">수정</a>
+        <a href="/Board/postList/page={{currentPage}}&category={{post.category.category_id}}&query={{searchKeyword}}" role="button" class="btn btn-secondary">목록</a>
+            <a href="/Board/post/update/{{post_id}}&page={{currentPage}}&category={{post.category.category_id}}&query={{searchKeyword}}" id="btn-update-read" role="button" class="btn btn-primary">수정</a>
             <button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
     </div>
 </div>
