@@ -49,6 +49,27 @@ public class MemberRepository {
         return jdbcTemplate.query("select * from board.MEMBER where LOGIN_ID = ? AND PASSWORD = ?", MemberRowMapper(), login_id, password);
     }
 
+    public int checkEmail(String email) {
+        String checkEmailQuery = "select exists (select PHONE from board.MEMBER where EMAIL = ?)";
+        String checkEmailParams = email;
+
+        return jdbcTemplate.queryForObject(checkEmailQuery, int.class, checkEmailParams);
+    }
+
+    public int checkPhone(String phone) {
+        String checkPhoneQuery = "select exists (select PHONE from board.MEMBER where PHONE = ?)";
+        String checkPhoneParams = phone;
+
+        return this.jdbcTemplate.queryForObject(checkPhoneQuery, int.class, checkPhoneParams);
+    }
+
+    public int checkLoginId(String login_id) {
+        String checkLoginIdQuery = "select exists (select LOGIN_ID from board.MEMBER where LOGIN_ID = ?";
+        String checkPhoneParams = login_id;
+
+        return jdbcTemplate.queryForObject(checkLoginIdQuery, int.class, checkPhoneParams);
+    }
+
     private RowMapper<Member> MemberRowMapper() {
         return (rs, rowNum) -> {
             Member member = new Member();

@@ -27,6 +27,9 @@ var main = {
         });
         $('#btn-comment').on('click', function () {
             _this.saveComment();
+        });
+        $('#btn-logout').on('click', function () {
+            _this.logout();
         })
 
         //console.log('init()');
@@ -46,9 +49,17 @@ var main = {
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
             data : JSON.stringify(data)
-        }).done(function () {
-            alert('회원가입이 되었습니다.');
-            window.location.href = '/';
+        }).done(function (response) {
+            console.log(response.code);
+            if (response.isSuccess == false)  {
+                alert(response.message);
+                window.location.href = '/join';
+            }
+            else {
+                alert('회원가입이 되었습니다.');
+                window.location.href = '/';
+            }
+
         }).fail(function (error){
             alert(JSON.stringify(error));
         });
@@ -131,6 +142,19 @@ var main = {
 
         });
     },
+    logout : function () {
+        console.log("로그아웃 시작");
+
+        $.ajax({
+            url : '/api/logout',
+            type : 'POST',
+            data : 1,
+            success : function () {
+                console.log("로그아웃 성공");
+                window.location.href = '/Board/postList/page=1&category=-1&query=';
+            }
+        })
+    },
     savePost : function () {
 
         var sCategory = $("select[name=category] > option:selected").val();
@@ -155,9 +179,16 @@ var main = {
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
             data : JSON.stringify(data)
-        }).done(function () {
-            alert('게시글을 등록하였습니다.');
-            window.location.href = '/Board/postList/page=1' + '&category=-1&query=' + "";
+        }).done(function (response) {
+            if (response.isSuccess == false) {
+                alert(response.message);
+                window.location.href ='/Board/post/create';
+            }
+            else {
+                alert('게시글을 등록하였습니다.');
+                window.location.href = '/Board/postList/page=1' + '&category=-1&query=' + "";
+            }
+
         }).fail(function (error){
             alert(JSON.stringify(error));
         })
@@ -209,7 +240,9 @@ var main = {
     searchPost : function () {
          var search_keyword = $('#searchKeyword').val();
          var pageNum = 1;
-         var category_id = $('#category.category_id').val();
+         var category_id = $('#category_id').val();
+
+         console.log("검색 버튼 클릭 : " + search_keyword);
 
          if (search_keyword != '') {
              $.ajax({
@@ -222,7 +255,7 @@ var main = {
              })
          }
          else
-             window.location.href = '/Board/postList/page=1&category={category_id}&query=' + search_keyword;
+             window.location.href = '/Board/postList/page=1&category=' + category_id + '&query=' + search_keyword;
     },
     saveComment : function () {
         var data = {
@@ -233,6 +266,8 @@ var main = {
         console.log(data);
 
         var page = $('#currentPage').val();
+        var category_id = $('#category_id').val();
+        var search_keyword = $('#searchKeyword').val();
 
         $.ajax({
             type : 'POST',
@@ -240,12 +275,18 @@ var main = {
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
             data : JSON.stringify(data)
-        }).done(function () {
-            window.location.href = '/Board/post/read/' + data.post_id + '&page=' + page;
+        }).done(function (response) {
+            if (response.isSuccess == false) {
+                alert(response.message);
+                window.location.href = '/Board/post/read/' + data.post_id + '&page=' + page + '&category=' + category_id + '&query=' + search_keyword;
+            }
+            else
+                window.location.href = '/Board/post/read/' + data.post_id + '&page=' + page + '&category=' + category_id + '&query=' + search_keyword;
         }).fail(function () {
             alert('댓글 작성 중 오류 발생');
         })
-    }
+    },
+
 };
 
 main.init();

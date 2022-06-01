@@ -5,6 +5,7 @@ import com.web.Board.Service.CommentService;
 import com.web.Board.Service.MemberService;
 import com.web.Board.Service.PostService;
 import com.web.Board.Domain.Post.Post;
+import config.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+
+import static config.BaseResponseStatus.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,12 +25,24 @@ public class PostApiController {
 
     @ResponseBody
     @PostMapping("/api/post/create")
-    public int createPost(@RequestBody Post post, HttpServletRequest request) {
+    public BaseResponse<Integer> createPost(@RequestBody Post post, HttpServletRequest request) {
         //System.out.println("글 등록");
         HttpSession session = request.getSession();
         String login_id = (String)session.getAttribute("login_id");
 
-        return postService.createPost(post, login_id);
+        try {
+            if (post.getTitle().length() == 0)
+                return new BaseResponse<>(POST_POSTS_EMPTY_TITLE);
+            if (post.getContent().length() == 0)
+                return new BaseResponse<>(POST_POSTS_EMPTY_CONTENTS);
+            if (post.getContent().length() > 1000)
+                return new BaseResponse<>(POST_POSTS_INVALID_CONTENTS);
+
+            return new BaseResponse<>(postService.createPost(post, login_id));
+        } catch (NullPointerException nullPointerException) {
+            return new BaseResponse<>(POST_POSTS_EMPTY_CATEGORY);
+        }
+
     }
 
     @ResponseBody
@@ -68,11 +83,13 @@ public class PostApiController {
 
     @ResponseBody
     @PostMapping("/api/comment")
-    public int saveComment(@RequestBody Comment comment, HttpServletRequest request) {
+    public BaseResponse<Integer> saveComment(@RequestBody Comment comment, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login_id = (String)session.getAttribute("login_id");
 
+        if (comment.getContent().length() == 0)
+            return new BaseResponse<>(POST_COMMENT_EMPTY_COMMENTS);
         //System.out.printf("controller -> saveComment() : comment login_id=%s\n", login_id);
-        return commentService.saveComment(comment, login_id);
+        return new BaseResponse<>(commentService.saveComment(comment, login_id));
     }
 }

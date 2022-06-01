@@ -2,11 +2,16 @@ package com.web.Board.Controller;
 
 import com.web.Board.Service.MemberService;
 import com.web.Board.Domain.Member.Member;
+import config.BaseException;
+import config.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import static config.BaseResponseStatus.*;
+import static utils.ValidationRegex.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -14,12 +19,27 @@ public class MemberApiController {
     private final MemberService memberService;
 
     @PostMapping("/api/member/join")
-    public int joinMember(@RequestBody Member member) {
-        int isPossibleID = 0;
-        //System.out.println(member.getName());
+    public BaseResponse<Integer> joinMember(@RequestBody Member member) {
+        if (member.getLogin_id().length() == 0)
+            return new BaseResponse<>(USERS_EMPTY_USER_ID);
+        if (member.getPassword().length() == 0)
+            return new BaseResponse<>(USERS_EMPTY_USER_PASSWORD);
+        if (member.getName().length() == 0)
+            return new BaseResponse<>(USERS_EMPTY_USER_NAME);
+        if (member.getEmail().length() == 0)
+            return new BaseResponse<>(USERS_EMPTY_USER_EMAIL);
+        if (member.getPhone().length() == 0)
+            return new BaseResponse<>(USERS_EMPTY_USER_PHONE);
+        if (!isRegexEmail(member.getEmail()))
+            return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
+        if (!isRegexPhone(member.getPhone()))
+            return new BaseResponse<>(POST_USERS_INVAlILD_PHONE);
 
-        return memberService.joinMember(member);
-
+        try {
+            return new BaseResponse<>(memberService.joinMember(member));
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
     }
 
     @ResponseBody
@@ -56,5 +76,14 @@ public class MemberApiController {
         session.setAttribute("login_id", login_id);
 
         return memberService.login(login_id, password);
+    }
+
+    @PostMapping("/api/logout")
+    public int logout(HttpSession session) {
+        session.removeAttribute("login_id");
+
+        //System.out.printf("세션에서 로그인 정보 삭제 완료\n");
+
+        return 1;
     }
 }

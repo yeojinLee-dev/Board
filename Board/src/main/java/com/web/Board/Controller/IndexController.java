@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -30,8 +31,9 @@ public class IndexController {
 
         return "login";
     }
-    @GetMapping("/member/join")
+    @GetMapping("/join")
     public String join() {
+
         return "join";
     }
 
@@ -39,10 +41,12 @@ public class IndexController {
     public String postList(@PathVariable int pageNum, @PathVariable String searchKeyword, @PathVariable int category_id, Model postList,
                            Model Login_Id, Model pageBtn, Model currentPage, Model search_keyword,
                            Model category, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        String login_id = (String) session.getAttribute("login_id");
 
-        Login_Id.addAttribute("login_id", login_id);
+        HttpSession session = request.getSession();
+        if (session.getAttribute("login_id") != null) {
+            String login_id = (String) session.getAttribute("login_id");
+            Login_Id.addAttribute("login_id", login_id);
+        }
 
         postList.addAttribute("postList", pageService.setPageList(pageNum, searchKeyword, category_id));
         //System.out.printf("IndexController.postList() : postList");
@@ -63,13 +67,12 @@ public class IndexController {
     @GetMapping("/Board/post/create")
     public String createPost(Model member, Model category, Model last_page, Model seq_num, HttpServletRequest request) {
         HttpSession session = request.getSession();
-
         String login_id = (String) session.getAttribute("login_id");
         int post_seq_num = postService.getPostCnt() + 1;
 
         seq_num.addAttribute("seq_num", post_seq_num);
-        member.addAttribute("login_id", login_id);
         category.addAttribute("category", categoryService.findAllCategory());
+        member.addAttribute("login_id", login_id);
 
         //System.out.printf("\nIndexController -> createPost()\nlast_page : %d\n", pageService.getCurrentPage(post_seq_num));
         return "post-create";
