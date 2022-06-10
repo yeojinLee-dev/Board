@@ -1,6 +1,5 @@
 package com.web.Board.Domain.Comment;
 
-import com.web.Board.Domain.Category.Category;
 import com.web.Board.Domain.Member.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

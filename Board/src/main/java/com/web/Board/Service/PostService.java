@@ -5,6 +5,7 @@ import com.web.Board.Domain.Member.MemberRepository;
 import com.web.Board.Domain.Post.Post;
 import com.web.Board.Domain.Post.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

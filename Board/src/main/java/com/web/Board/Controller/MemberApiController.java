@@ -1,24 +1,26 @@
 package com.web.Board.Controller;
 
+import com.web.Board.Domain.Member.MemberLoginReq;
 import com.web.Board.Service.MemberService;
 import com.web.Board.Domain.Member.Member;
-import config.BaseException;
-import config.BaseResponse;
+import com.web.Board.config.BaseException;
+import com.web.Board.config.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import static config.BaseResponseStatus.*;
-import static utils.ValidationRegex.*;
+import static com.web.Board.config.BaseResponseStatus.*;
+import static com.web.Board.utils.ValidationRegex.*;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/member")
 public class MemberApiController {
     private final MemberService memberService;
 
-    @PostMapping("/api/member/join")
+    @PostMapping("/join")
     public BaseResponse<Integer> joinMember(@RequestBody Member member) {
         if (member.getLogin_id().length() == 0)
             return new BaseResponse<>(USERS_EMPTY_USER_ID);
@@ -42,8 +44,7 @@ public class MemberApiController {
         }
     }
 
-    @ResponseBody
-    @PostMapping("/api/member/join/check/login-id")
+    @PostMapping("/join/login-id")
     public int checkLoginId(@RequestParam String login_id) {
         int isDuplicateId = -1;
 
@@ -56,8 +57,7 @@ public class MemberApiController {
         return isDuplicateId;
     }
 
-    @ResponseBody
-    @PostMapping("/api/member/join/check/password")
+    @PostMapping("/join/password")
     public int checkPassword(@RequestParam String password1, @RequestParam String password2) {
         int isSamePW = -1;
 
@@ -69,16 +69,16 @@ public class MemberApiController {
         return isSamePW;
     }
 
-    @PostMapping("/api/member/login")
-    public int login(@RequestParam String login_id, @RequestParam String password, HttpServletRequest request) {
+    @PostMapping("/login")
+    public int login(@RequestBody MemberLoginReq memberLoginReq, HttpServletRequest request) {
         //System.out.println("아이디 => " + login_id);
         HttpSession session = request.getSession();
-        session.setAttribute("login_id", login_id);
+        session.setAttribute("login_id", memberLoginReq.getLogin_id());
 
-        return memberService.login(login_id, password);
+        return memberService.login(memberLoginReq.getLogin_id(), memberLoginReq.getPassword());
     }
 
-    @PostMapping("/api/logout")
+    @PostMapping("/logout")
     public int logout(HttpSession session) {
         session.removeAttribute("login_id");
 

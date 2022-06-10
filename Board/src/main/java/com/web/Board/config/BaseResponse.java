@@ -1,4 +1,4 @@
-package config;
+package com.web.Board.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import static config.BaseResponseStatus.SUCCESS;
+import static com.web.Board.config.BaseResponseStatus.SUCCESS;
 
 @Getter
 @AllArgsConstructor

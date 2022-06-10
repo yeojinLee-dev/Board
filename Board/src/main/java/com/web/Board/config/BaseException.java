@@ -1,6 +1,5 @@
-package config;
+package com.web.Board.config;
 
-import config.BaseResponseStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

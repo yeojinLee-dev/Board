@@ -1,4 +1,4 @@
-package config;
+package com.web.Board.config;
 
 import lombok.Getter;
 

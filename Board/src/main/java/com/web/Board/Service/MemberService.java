@@ -2,11 +2,11 @@ package com.web.Board.Service;
 
 import com.web.Board.Domain.Member.Member;
 import com.web.Board.Domain.Member.MemberRepository;
-import config.BaseException;
+import com.web.Board.config.BaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static config.BaseResponseStatus.*;
+import static com.web.Board.config.BaseResponseStatus.*;
 
 @RequiredArgsConstructor
 @Service
@@ -38,7 +38,7 @@ public class MemberService {
     }
 
     private int checkEmail(String email) throws BaseException {
-        try{
+        try {
             return memberRepository.checkEmail(email);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

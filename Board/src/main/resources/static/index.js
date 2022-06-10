@@ -45,7 +45,7 @@ var main = {
 
         $.ajax({
             type : 'POST',
-            url : '/api/member/join',
+            url : '/member/join',
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
             data : JSON.stringify(data)
@@ -70,7 +70,7 @@ var main = {
         };
 
         $.ajax({
-            url: '/api/member/join/check/login-id',
+            url: '/member/join/login-id',
             type : 'POST',
             data : data,
             success : function (isDuplicateId) {
@@ -96,7 +96,7 @@ var main = {
         };
 
         $.ajax({
-            url:'/api/member/join/check/password',
+            url:'/member/join/password',
             type : 'POST',
             data : data,
             success : function (isSamePW) {
@@ -124,9 +124,11 @@ var main = {
 
         //console.log("아이디 : ", data.login_id, "비밀번호 : ", data.password);
         $.ajax({
-            url: '/api/member/login',
+            url: '/member/login',
             type : 'POST',
-            data : data,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            data : JSON.stringify(data),
             success: function (successLogin) {
                 if (successLogin == 1) {
                     console.log("로그인 성공");
