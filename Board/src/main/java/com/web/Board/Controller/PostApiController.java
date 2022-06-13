@@ -15,13 +15,14 @@ import javax.servlet.http.HttpSession;
 import static com.web.Board.config.BaseResponseStatus.*;
 
 @RestController
+@RequestMapping("/post")
 @RequiredArgsConstructor
 public class PostApiController {
     private final PostService postService;
     private final MemberService memberService;
     private final CommentService commentService;
 
-    @PostMapping("/api/post/create")
+    @PostMapping("/new")
     public BaseResponse<Integer> createPost(@RequestBody Post post, HttpServletRequest request) {
         //System.out.println("글 등록");
         HttpSession session = request.getSession();
@@ -42,7 +43,7 @@ public class PostApiController {
 
     }
 
-    @PutMapping("/api/post/update/{post_id}")
+    @PutMapping("/{post_id}")
     public int updatePost(@RequestBody Post post, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login_id = (String)session.getAttribute("login_id");
@@ -51,12 +52,12 @@ public class PostApiController {
         return postService.updatePost(post, login_id);
     }
 
-    @DeleteMapping("/api/post/delete/{post_id}")
+    @DeleteMapping("/{post_id}")
     public int deletePost(@PathVariable int post_id) {
         return postService.deletePost(post_id);
     }
 
-    @PostMapping("/api/post/read/{post_id}")
+    @PostMapping("/{post_id}")
     public int checkAuthor(@PathVariable int post_id, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login_id = (String)session.getAttribute("login_id");
@@ -75,7 +76,7 @@ public class PostApiController {
         return isSameAuthor;
     }
 
-    @PostMapping("/api/comment")
+    @PostMapping("/comment")
     public BaseResponse<Integer> saveComment(@RequestBody Comment comment, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login_id = (String)session.getAttribute("login_id");

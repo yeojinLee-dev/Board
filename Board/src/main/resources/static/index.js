@@ -53,7 +53,7 @@ var main = {
             console.log(response.code);
             if (response.isSuccess == false)  {
                 alert(response.message);
-                window.location.href = '/join';
+                window.location.href = '/member/join';
             }
             else {
                 alert('회원가입이 되었습니다.');
@@ -119,7 +119,7 @@ var main = {
             login_id: $('#login_id').val(),
             password: $('#password').val()
         };
-        var pageNum = 1;
+        var page = 1;
         var category_id = -1;
 
         //console.log("아이디 : ", data.login_id, "비밀번호 : ", data.password);
@@ -132,7 +132,7 @@ var main = {
             success: function (successLogin) {
                 if (successLogin == 1) {
                     console.log("로그인 성공");
-                    window.location.href = '/Board/postList/page=' + pageNum + '&category=' + category_id + '&query=';
+                    window.location.href = '/board?page=' + page + '&category=' + category_id + '&query=';
                 } else if (successLogin == 0) {
                     $('.error_message_login').css("display", "inline-block");
                     console.log("로그인 실패");
@@ -148,22 +148,18 @@ var main = {
         console.log("로그아웃 시작");
 
         $.ajax({
-            url : '/api/logout',
+            url : '/member/logout',
             type : 'POST',
             data : 1,
             success : function () {
                 console.log("로그아웃 성공");
-                window.location.href = '/Board/postList/page=1&category=-1&query=';
+                window.location.href = '/board?page=1&category=-1&query=';
             }
         })
     },
     savePost : function () {
 
         var sCategory = $("select[name=category] > option:selected").val();
-        var last_page = parseInt($('#last_page').val());
-        var pageNum = 1;
-
-        console.log("마지막 페이지 번호 :" + last_page);
 
         var data = {
             title: $('#title').val(),
@@ -177,18 +173,18 @@ var main = {
         
         $.ajax({
             type : 'POST',
-            url : '/api/post/create',
+            url : '/post/new',
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
             data : JSON.stringify(data)
         }).done(function (response) {
             if (response.isSuccess == false) {
                 alert(response.message);
-                window.location.href ='/Board/post/create';
+                window.location.href ='/post/new';
             }
             else {
                 alert('게시글을 등록하였습니다.');
-                window.location.href = '/Board/postList/page=1' + '&category=-1&query=' + "";
+                window.location.href = '/board?page=1&category=-1&query=' + "";
             }
 
         }).fail(function (error){
@@ -197,8 +193,8 @@ var main = {
     },
     updatePost : function () {
         var sCategory = $("select[name=category] > option:selected").val();
-        var currentPage = parseInt($('#currentPage').val());
-        var search_keyword = $("#searchKeyword").val();
+        var page = parseInt($('#page').val());
+        var query = $("#query").val();
 
         var data = {
             post_id : parseInt($('#post_id').val()),
@@ -207,17 +203,15 @@ var main = {
             category_id : parseInt(sCategory),
         };
 
-        console.log("currentPage : %d", currentPage);
-
         $.ajax({
             type : 'PUT',
-            url : '/api/post/update/' + data.post_id,
+            url : '/post/' + data.post_id,
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
             data : JSON.stringify(data),
         }).done(function () {
             alert('수정이 완료되었습니다.');
-            window.location.href = '/Board/post/read/' + data.post_id + '&page=' + currentPage + '&category=' + data.category_id + '&query=' + search_keyword;
+            window.location.href = '/post/' + data.post_id + '?page=' + page + '&category=' + data.category_id + '&query=' + query;
         }).fail(function (error){
             alert(JSON.stringify(error));
         })
@@ -229,35 +223,35 @@ var main = {
 
         $.ajax({
             type : 'DELETE',
-            url : '/api/post/delete/' + post_id,
+            url : '/post/' + post_id,
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
         }).done(function () {
             alert('삭제되었습니다.');
-            window.location.href = '/Board/postList/page=1&category=-1&query= ';
+            window.location.href = '/board?page=1&category=-1&query= ';
         }).fail(function (error) {
             alert('삭제 중 오류가 발생하였습니다.');
         })
     },
     searchPost : function () {
-         var search_keyword = $('#searchKeyword').val();
+         var query = $('#query').val();
          var pageNum = 1;
-         var category_id = $('#category_id').val();
+         var category = $('#category').val();
 
-         console.log("검색 버튼 클릭 : " + search_keyword);
+         console.log("검색 버튼 클릭 : " + query);
 
-         if (search_keyword != '') {
+         if (query != '') {
              $.ajax({
                  type : 'GET',
-                 url : '/Board/postList/page=' + pageNum + '&category=' + category_id + '&query=' + search_keyword,
+                 url : '/board?page=' + pageNum + '&category=' + category + '&query=' + query,
                  contentType : 'application/json; charset=utf-8',
                  success : function () {
-                     window.location.href = '/Board/postList/page=' + pageNum + '&category=' + category_id + '&query=' + search_keyword;
+                     window.location.href = '/board?page=' + pageNum + '&category=' + category + '&query=' + query;
                  }
              })
          }
          else
-             window.location.href = '/Board/postList/page=1&category=' + category_id + '&query=' + search_keyword;
+             window.location.href = '/board?page=1&category=' + category + '&query=' + query;
     },
     saveComment : function () {
         var data = {
@@ -267,23 +261,23 @@ var main = {
 
         console.log(data);
 
-        var page = $('#currentPage').val();
-        var category_id = $('#category_id').val();
-        var search_keyword = $('#searchKeyword').val();
+        var page = $('#page').val();
+        var category = $('#category').val();
+        var query = $('#query').val();
 
         $.ajax({
             type : 'POST',
-            url : '/api/comment',
+            url : '/post/comment',
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
             data : JSON.stringify(data)
         }).done(function (response) {
             if (response.isSuccess == false) {
                 alert(response.message);
-                window.location.href = '/Board/post/read/' + data.post_id + '&page=' + page + '&category=' + category_id + '&query=' + search_keyword;
+                window.location.href = '/post/' + data.post_id + '?page=' + page + '&category=' + category + '&query=' + query;
             }
             else
-                window.location.href = '/Board/post/read/' + data.post_id + '&page=' + page + '&category=' + category_id + '&query=' + search_keyword;
+                window.location.href = '/post/' + data.post_id + '?page=' + page + '&category=' + category + '&query=' + query;
         }).fail(function () {
             alert('댓글 작성 중 오류 발생');
         })

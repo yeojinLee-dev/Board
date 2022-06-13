@@ -13,13 +13,13 @@
 {{^login_id}}
     <script>
         alert("로그인 후 이용하실 수 있습니다.");
-        window.location.href = '/Board/postList/page=1&category=-1&query=';
+        window.location.href = '/board?page=1&category=-1&query=';
     </script>
 {{/login_id}}
 {{#login_id}}
-<input type="hidden" id="currentpage" value={{currentPage}}>
-<input type="hidden" id="category_id" value={{post.category_id}}>
-<input type="hidden" id="searchKeyword" value={{searchKeyword}}>
+<input type="hidden" id="page" value={{page}}>
+<input type="hidden" id="category" value={{category}}>
+<input type="hidden" id="query" value={{query}}>
 
 <div class="col-md-12">
     <h2>게시글 조회</h2><br>
@@ -45,10 +45,9 @@
                 <textarea class="form-control" id="content" readonly>{{post.content}}</textarea><br><br>
             </div>
         </form>
-        <input type="hidden" id="currentPage" value={{currentPage}}>
-        <a href="/Board/postList/page={{currentPage}}&category={{post.category.category_id}}&query={{searchKeyword}}" role="button" class="btn btn-secondary">목록</a>
-            <a href="/Board/post/update/{{post_id}}&page={{currentPage}}&category={{post.category.category_id}}&query={{searchKeyword}}" id="btn-update-read" role="button" class="btn btn-primary">수정</a>
-            <button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
+        <a href="/board?page={{page}}&category={{category}}&query={{query}}" role="button" class="btn btn-secondary">목록</a>
+        <a href="/repost/{{post_id}}?page={{page}}&category={{post.category.category_id}}&query={{query}}" id="btn-update-read" role="button" class="btn btn-primary">수정</a>
+        <button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -60,7 +59,7 @@
 
         $.ajax({
             type : 'POST',
-            url : '/api/post/read/' + post_id,
+            url : '/post/' + post_id,
             success : function (isSameAuthor) {
                 console.log(isSameAuthor);
 

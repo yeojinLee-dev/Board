@@ -32,10 +32,10 @@
     </style>
     <div>
         <ul>
-            <li><a href="/Board/postList/page={{currentPage}}&category=-1&query={{searchKeyword}}">전체글</a></li>
-            {{#category}}
-                <li><a href="/Board/postList/page={{currentPage}}&category={{category_id}}&query={{searchKeyword}}">{{name}}</a></li>
-            {{/category}}
+            <li><a href="/board?page={{page}}&category=-1&query={{query}}">전체글</a></li>
+            {{#categoryList}}
+                <li><a href="/board?page={{page}}&category={{category_id}}&query={{query}}">{{name}}</a></li>
+            {{/categoryList}}
         </ul>
     </div>
 

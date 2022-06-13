@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,20 +24,17 @@ public class IndexController {
 
     @GetMapping("/")
     public String login() {
-        //model.addAttribute("post", postService.findAll());
-
         return "login";
     }
-    @GetMapping("/join")
+    @GetMapping("/member/join")
     public String join() {
-
         return "join";
     }
 
-    @GetMapping("/Board/postList/page={pageNum}&category={category_id}&query={searchKeyword}")
-    public String postList(@PathVariable int pageNum, @PathVariable String searchKeyword, @PathVariable int category_id, Model postList,
-                           Model Login_Id, Model pageBtn, Model currentPage, Model search_keyword,
-                           Model category, HttpServletRequest request) {
+    @GetMapping("/board")
+    public String postList(@RequestParam int page, @RequestParam String query, @RequestParam int category,
+                           Model List, Model Login_Id, Model pageBtn, Model Page, Model Query,
+                           Model CategoryList, Model Category, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         if (session.getAttribute("login_id") != null) {
@@ -44,24 +42,19 @@ public class IndexController {
             Login_Id.addAttribute("login_id", login_id);
         }
 
-        postList.addAttribute("postList", pageService.setPageList(pageNum, searchKeyword, category_id));
-        //System.out.printf("IndexController.postList() : postList");
+        List.addAttribute("list", pageService.setPageList(page, query, category));
+        pageBtn.addAttribute("pageBtn", pageService.setPageBtn(page, query, category));
+        CategoryList.addAttribute("categoryList", categoryService.findAllCategory());
 
-        pageBtn.addAttribute("pageBtn", pageService.setPageBtn(pageNum, searchKeyword, category_id));
-        //System.out.printf("IndexController.postList() : pageBtn");
-
-        currentPage.addAttribute("currentPage", pageNum);
-        //System.out.printf("IndexController.postList() : currentPage : %d\n", pageNumParam);
-
-        category.addAttribute("category", categoryService.findAllCategory());
-
-        search_keyword.addAttribute("searchKeyword", searchKeyword);
+        Query.addAttribute("query", query);
+        Category.addAttribute("category", category);
+        Page.addAttribute("page", page);
 
         return "post-list";
     }
 
-    @GetMapping("/Board/post/create")
-    public String createPost(Model member, Model category, Model last_page, Model seq_num, HttpServletRequest request) {
+    @GetMapping("/post/new")
+    public String createPost(Model member, Model category, Model seq_num, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login_id = (String) session.getAttribute("login_id");
         int post_seq_num = postService.getPostCnt() + 1;
@@ -79,32 +72,33 @@ public class IndexController {
         return "member-info";
     }
 
-    @GetMapping("/Board/post/read/{post_id}&page={currentPage}&category={category_id}&query={searchKeyword}")
-    public String readPost(@PathVariable int post_id, @PathVariable int currentPage, @PathVariable String searchKeyword,
-                           Model Post, Model Login_id, Model CurrentPage, Model Comment, Model SearchKeyword,
+    @GetMapping("/post/{post_id}")
+    public String readPost(@PathVariable int post_id, @RequestParam int page, @RequestParam String query, @RequestParam int category,
+                           Model Post, Model Login_id, Model Page, Model Comment, Model Query, Model Category,
                            HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login_id = (String) session.getAttribute("login_id");
 
         Login_id.addAttribute("login_id", login_id);
         Post.addAttribute("post", postService.findByPost_Id(post_id));
-        CurrentPage.addAttribute("currentPage", currentPage);
+        Page.addAttribute("page", page);
         Comment.addAttribute("comment", commentService.findByPost_Id(post_id));
-        SearchKeyword.addAttribute("searchKeyword", searchKeyword);
+        Query.addAttribute("query", query);
+        Category.addAttribute("category", category);
 
         //System.out.printf("\nIndexController -> readPost()\n comment : %s\n", comments.get(0).getContent());
-
 
         return "post-read";
     }
 
-    @GetMapping("/Board/post/update/{post_id}&page={currentPage}&category={category_id}&query={searchKeyword}")
-    public String readPostToUpdate(@PathVariable int post_id, @PathVariable int currentPage, @PathVariable String searchKeyword,
-                                   Model SearchKeyword, Model CurrentPage, Model Post, Model Category) {
+    @GetMapping("/repost/{post_id}")
+    public String readPostToUpdate(@PathVariable int post_id, @RequestParam int page, @RequestParam String query,
+                                   Model Query, Model Page, Model Post, Model Category) {
         Post.addAttribute("post", postService.findByPost_Id(post_id));
         Category.addAttribute("category", categoryService.findAllCategory());
-        CurrentPage.addAttribute("currentPage", currentPage);
-        SearchKeyword.addAttribute("searchKeyword", searchKeyword);
+        Page.addAttribute("page", page);
+        Query.addAttribute("query", query);
+
         return "post-modify";
     }
 }
