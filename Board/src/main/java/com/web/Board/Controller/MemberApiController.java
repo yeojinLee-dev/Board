@@ -3,20 +3,20 @@ package com.web.Board.Controller;
 import com.web.Board.Domain.Member.MemberLoginReq;
 import com.web.Board.Service.MemberService;
 import com.web.Board.Domain.Member.Member;
-import com.web.Board.config.BaseException;
-import com.web.Board.config.BaseResponse;
+import com.web.Board.Config.BaseException;
+import com.web.Board.Config.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import static com.web.Board.config.BaseResponseStatus.*;
+import static com.web.Board.Config.BaseResponseStatus.*;
 import static com.web.Board.utils.ValidationRegex.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 public class MemberApiController {
     private final MemberService memberService;
 

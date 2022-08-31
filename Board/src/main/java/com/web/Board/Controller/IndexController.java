@@ -26,6 +26,7 @@ public class IndexController {
     public String login() {
         return "login";
     }
+
     @GetMapping("/member/join")
     public String join() {
         return "join";

@@ -45,7 +45,7 @@ var main = {
 
         $.ajax({
             type : 'POST',
-            url : '/member/join',
+            url : '/api/member/join',
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
             data : JSON.stringify(data)
@@ -70,7 +70,7 @@ var main = {
         };
 
         $.ajax({
-            url: '/member/join/login-id',
+            url: '/api/member/join/login-id',
             type : 'POST',
             data : data,
             success : function (isDuplicateId) {
@@ -96,7 +96,7 @@ var main = {
         };
 
         $.ajax({
-            url:'/member/join/password',
+            url:'/api/member/join/password',
             type : 'POST',
             data : data,
             success : function (isSamePW) {
@@ -124,7 +124,7 @@ var main = {
 
         //console.log("아이디 : ", data.login_id, "비밀번호 : ", data.password);
         $.ajax({
-            url: '/member/login',
+            url: '/api/member/login',
             type : 'POST',
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
@@ -148,7 +148,7 @@ var main = {
         console.log("로그아웃 시작");
 
         $.ajax({
-            url : '/member/logout',
+            url : '/api/member/logout',
             type : 'POST',
             data : 1,
             success : function () {
@@ -173,7 +173,7 @@ var main = {
         
         $.ajax({
             type : 'POST',
-            url : '/post/new',
+            url : '/api/post/new',
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
             data : JSON.stringify(data)
@@ -205,7 +205,7 @@ var main = {
 
         $.ajax({
             type : 'PUT',
-            url : '/post/' + data.post_id,
+            url : '/api/post/' + data.post_id,
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
             data : JSON.stringify(data),
@@ -223,7 +223,7 @@ var main = {
 
         $.ajax({
             type : 'DELETE',
-            url : '/post/' + post_id,
+            url : '/api/post/' + post_id,
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
         }).done(function () {
@@ -267,7 +267,7 @@ var main = {
 
         $.ajax({
             type : 'POST',
-            url : '/post/comment',
+            url : '/api/post/comment',
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
             data : JSON.stringify(data)

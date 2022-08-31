@@ -5,17 +5,17 @@ import com.web.Board.Service.CommentService;
 import com.web.Board.Service.MemberService;
 import com.web.Board.Service.PostService;
 import com.web.Board.Domain.Post.Post;
-import com.web.Board.config.BaseResponse;
+import com.web.Board.Config.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import static com.web.Board.config.BaseResponseStatus.*;
+import static com.web.Board.Config.BaseResponseStatus.*;
 
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/api/post")
 @RequiredArgsConstructor
 public class PostApiController {
     private final PostService postService;

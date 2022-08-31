@@ -2,11 +2,11 @@ package com.web.Board.Service;
 
 import com.web.Board.Domain.Member.Member;
 import com.web.Board.Domain.Member.MemberRepository;
-import com.web.Board.config.BaseException;
+import com.web.Board.Config.BaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.web.Board.config.BaseResponseStatus.*;
+import static com.web.Board.Config.BaseResponseStatus.*;
 
 @RequiredArgsConstructor
 @Service
